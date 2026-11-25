@@ -50,4 +50,8 @@ Delivered automatic and manual capture and verified scan delivery in [PR #11](ht
 
 Delivered page straightening, four appearance modes, and tray editing in [PR #12](https://github.com/Suman-Rajak/Phone-Bridge/pull/12). Four synthetic landmarks landed within two pixels. All four appearance goldens matched, and 106 unit tests and twelve Chromium tests passed locally. The tray preserves verified pages during a disconnect. See the [session evidence](../evidence/sessions/T10.md).
 
-Next is T11, multi-page PDF export with a size target.
+## T11 · Size-targeted PDF export
+
+Delivered ordered PDF export in [PR #13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13). The browser exported five pages into 479,236 bytes against a 500,000-byte target, and PDF.js verified their order. Local verification passed with 109 unit tests and fourteen browser tests. See the [session evidence](../evidence/sessions/T11.md).
+
+T12 is waiting on the SmartDoc archive and baseline in [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). Next is T13, file transfer.

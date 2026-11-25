@@ -7,6 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@phonebridge/pdf": "workspace:*",
     "@phonebridge/protocol": "workspace:*",
     "@phonebridge/rtc": "workspace:*",
     "@phonebridge/vision": "workspace:*",

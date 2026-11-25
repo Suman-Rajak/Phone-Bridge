@@ -23,6 +23,8 @@ Hold a sharp page steady to capture it automatically, or tap **Capture page**. T
 
 On the laptop, select a page to change its appearance, rotate it, or adjust its corners. Drag thumbnails to reorder pages or use the arrow buttons. Choose **Retake** to open Scan on the phone and capture a replacement.
 
+Choose **Export PDF** on the laptop and enter a target size in KB. Select **Create PDF** and check the final size before downloading. The PDF follows the tray’s page order.
+
 Run the checks before opening a pull request.
 
 ```sh

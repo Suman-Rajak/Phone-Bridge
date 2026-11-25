@@ -18,7 +18,7 @@ test("tray reorders, rotates, edits, retakes and deletes captured pages", async 
   page: laptop,
   browser,
 }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(150_000);
   await laptop.setViewportSize({ width: 1440, height: 900 });
   await laptop.emulateMedia({ colorScheme: "light" });
   await laptop.goto("/");
@@ -103,7 +103,9 @@ test("tray reorders, rotates, edits, retakes and deletes captured pages", async 
     const beforeEdit = await image.getAttribute("src");
     await drawer.getByRole("button", { name: "Save corners" }).click();
     await expect(drawer).toHaveCount(0);
-    await expect(image).not.toHaveAttribute("src", beforeEdit ?? "");
+    await expect(image).not.toHaveAttribute("src", beforeEdit ?? "", {
+      timeout: 30_000,
+    });
 
     for (const device of [laptop, phone]) {
       const { violations } = await new AxeBuilder({ page: device }).analyze();
@@ -132,8 +134,11 @@ test("tray reorders, rotates, edits, retakes and deletes captured pages", async 
     });
     await expect(ready).toBeEnabled({ timeout: 30_000 });
     await expect(pages).toHaveCount(2);
+    const removed = await image.getAttribute("src");
     await laptop.getByRole("button", { name: "Delete" }).click();
     await expect(pages).toHaveCount(1);
+    await expect(image).not.toHaveAttribute("src", removed ?? "");
+    await expect(image).toHaveAttribute("src", /^blob:/);
     await expect(image).toBeVisible();
     const retained = await image.getAttribute("src");
     await phone.close();

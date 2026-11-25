@@ -282,13 +282,13 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test -- vision && pnpm test:e2e -- tray`
 
 #### T11 · PDF export with exact size target
-- Stage: Build · Effort: high · Depends: T10 · Status: todo
+- Stage: Build · Effort: high · Depends: T10 · Status: done (PR #13)
 - Build (`packages/pdf`, Web Worker, `pdf-lib`): page size A4 when snapped, else pixels at 200 DPI. Size target algorithm: (1) encode each page at JPEG 0.8, its size = weight; (2) page budget = (target − 4 KB × pages) × weight ÷ total weight; (3) per page, binary search quality in [0.35, 0.95] for 8 steps for the largest size ≤ budget; if 0.35 is still too big, downscale × 0.85 and repeat; (4) assemble; if over target, cut the largest page's budget by 10% and redo it. Show the exact final size.
 - Done when: 5 fixture pages at a 500 KB target → 450–500 KB; impossible-at-0.35 case downscales and meets target; output opens in `pdfjs-dist` with correct order.
 - Verify: `pnpm test -- pdf`
 
 #### T12 · Vision benchmark gate in CI
-- Stage: Automate · Effort: medium · Depends: T03 · Human: H5 · Status: todo
+- Stage: Automate · Effort: medium · Depends: T03 · Human: H5 · Status: blocked (H5)
 - Build: CI caches the SmartDoc subset and fails a PR if mean IoU drops more than 0.02 below `bench/baseline.json`. Only a PR titled `bench: update baseline` with a justification may change the baseline.
 - Done when: a temporary breaking commit makes CI fail; reverting makes it pass.
 

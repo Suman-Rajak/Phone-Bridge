@@ -66,3 +66,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Keep each original JPEG for corner edits. Process one page at a time in the worker and encode a separate thumbnail. Original preserves colour after straightening, and each of the other modes uses the corrected background.
 - Offer keyboard reordering alongside drag and drop. Retaking requests a replacement by page ID, and the old page stays available until the replacement passes verification. [Scan transfer contract](protocol.md#scan-transfer)
 - Keep verified pages and the editor in the laptop tab when the phone disconnects. End the pending transfer and release its buffers while allowing local edits to continue.
+
+## T11 · Size-targeted PDF export
+
+- Capture the tray’s page order and appearance when opening the export drawer. JPEG downscaling changes encoded resolution while keeping the PDF page’s A4 or 200 DPI dimensions.
+- Treat 1 KB as 1,000 bytes. Reserve 4 KB per page for document overhead and allocate the remaining bytes by the pages’ quality-0.8 JPEG weights. The worker verifies the complete PDF length and reports the exact size.
+- Produce PDF files locally with the browser’s JPEG encoder and use PDF.js to check their page order in tests. [ADR 0004](adr/0004-pdf-export-and-verification.md)
