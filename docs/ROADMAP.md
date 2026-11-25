@@ -228,7 +228,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test -- protocol && pnpm typecheck`
 
 #### T04S · Codex skills
-- Stage: Automate · Effort: medium · Depends: T04 · Status: todo
+- Stage: Automate · Effort: medium · Depends: T04 · Status: blocked (H5)
 - Build: check the official Codex docs for how repo-level skills are defined and where they live, then create: (1) `add-protocol-message` (schema + tests + `docs/design/protocol.md`); (2) `vision-bench` (run benchmark, compare with baseline, summarise); (3) `bug-fix` (reproduce → failing test → fix → log in `docs/test/bug-log.md`). Document them in `docs/automate/skills.md`. Use them in later tasks and tag each use with `Codex-Capabilities: skill:<name>`.
 - Done when: the skills exist in the documented location and each ran once successfully. If skills are unsupported in this Codex, ask (2.4) and keep them as Markdown playbooks in `docs/automate/`.
 
