@@ -1,6 +1,7 @@
 pnpm-lock.yaml
 .pnpm-store/
 dist/
+.wrangler/
 coverage/
 playwright-report/
 test-results/

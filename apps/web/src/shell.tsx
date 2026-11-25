@@ -10,14 +10,22 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useState } from "react";
-import { Brand, Button, Card, EmptyState, StatusPill } from "./ui/primitives";
+import type { PairingSnapshot } from "@phonebridge/rtc";
+import {
+  PairingCode,
+  PairingError,
+  PairingStatus,
+  usePairing,
+  VerificationCode,
+} from "./pairing";
+import { Brand, Button, Card, EmptyState } from "./ui/primitives";
 
-function AppHeader({ status }: { status: string }) {
+function AppHeader({ snapshot }: { snapshot: PairingSnapshot }) {
   return (
     <header className="app-header">
       <div className="app-header-inner">
         <Brand />
-        <StatusPill>{status}</StatusPill>
+        <PairingStatus snapshot={snapshot} />
       </div>
     </header>
   );
@@ -42,43 +50,69 @@ const pairingSteps = [
 ];
 
 export function LaptopShell() {
+  const { snapshot, reconnect } = usePairing("host");
+  const { failure, phase, sas, url } = snapshot;
+  const connected = phase === "connected";
+
   return (
     <div className="app-shell">
-      <AppHeader status="No phone connected" />
-      <main className="laptop-main">
+      <AppHeader snapshot={snapshot} />
+      <main className="laptop-main" data-connected={connected}>
         <div className="intro">
-          <h1>Connect your phone</h1>
-          <p>
-            Use your phone as a scanner, document camera, clicker, or clipboard
-            right from your browser.
-          </p>
+          <h1>{connected ? "Phone connected" : "Connect your phone"}</h1>
+          {!connected && (
+            <p>
+              Use your phone as a scanner, document camera, clicker, or
+              clipboard right from your browser.
+            </p>
+          )}
         </div>
         <Card className="pairing-card">
-          <div className="pairing-illustration" aria-hidden="true">
-            <QrCode />
-          </div>
-          <h2>Pair with a QR code</h2>
-          <p className="muted">Phone pairing isn’t available yet.</p>
-        </Card>
-        <section
-          className="pairing-steps"
-          aria-labelledby="pairing-steps-title"
-        >
-          <h2 id="pairing-steps-title">How it works</h2>
-          <ol>
-            {pairingSteps.map(({ icon: Icon, title, text }) => (
-              <li key={title}>
-                <span className="icon-tile">
-                  <Icon aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="step-title">{title}</p>
-                  <p className="muted">{text}</p>
+          {failure ? (
+            <PairingError failure={failure} reconnect={reconnect} />
+          ) : connected && sas ? (
+            <VerificationCode sas={sas} />
+          ) : (
+            <>
+              {url && phase === "waiting" ? (
+                <PairingCode key={url} url={url} />
+              ) : (
+                <div className="pairing-illustration" aria-hidden="true">
+                  <QrCode />
                 </div>
-              </li>
-            ))}
-          </ol>
-        </section>
+              )}
+              <h2>Pair with a QR code</h2>
+              <p className="muted">
+                {phase === "connecting"
+                  ? "Connecting to your phone…"
+                  : url
+                    ? "Scan with your phone’s camera."
+                    : "Preparing your pairing code…"}
+              </p>
+            </>
+          )}
+        </Card>
+        {!connected && (
+          <section
+            className="pairing-steps"
+            aria-labelledby="pairing-steps-title"
+          >
+            <h2 id="pairing-steps-title">How it works</h2>
+            <ol>
+              {pairingSteps.map(({ icon: Icon, title, text }) => (
+                <li key={title}>
+                  <span className="icon-tile">
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="step-title">{title}</p>
+                    <p className="muted">{text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
       </main>
     </div>
   );
@@ -122,21 +156,29 @@ const modes = [
   },
 ] as const;
 
-export function PhoneShell() {
+export function PhoneShell({ room }: { room: string }) {
   const [mode, setMode] = useState<(typeof modes)[number]>(modes[0]);
+  const { snapshot } = usePairing("phone", room);
+  const { failure, phase, sas } = snapshot;
   const Icon = mode.icon;
 
   return (
     <div className="app-shell phone-shell">
-      <AppHeader status="Not connected" />
+      <AppHeader snapshot={snapshot} />
       <main className="phone-main">
         <h1>{mode.title}</h1>
         <Card className="phone-workspace">
-          <EmptyState
-            icon={<Icon />}
-            title="Waiting for your laptop"
-            description={mode.text}
-          />
+          {failure ? (
+            <PairingError failure={failure} />
+          ) : phase === "connected" && sas ? (
+            <VerificationCode sas={sas} />
+          ) : (
+            <EmptyState
+              icon={<Icon />}
+              title="Waiting for your laptop"
+              description={mode.text}
+            />
+          )}
         </Card>
       </main>
       <div className="mode-bar" role="group" aria-label="Phone tools">

@@ -69,3 +69,22 @@ Anyone with an unprotected Quick Tunnel URL can reach the running dev server. St
 5. On the phone, visit https://192.168.1.20:5173/diagnostics with your own LAN address. Confirm the browser opens the page without a certificate warning and the header reads **Secure page**. Remove the test CA from the phone when you are finished.
 
 If the LAN page cannot connect, check the laptop’s private-network firewall and that the Wi-Fi allows devices to reach each other. If the address changed, regenerate the certificate for the new address. If **Secure page** appears and a capability is **Unavailable**, compare the browser with the [expected capability matrix](../understand/browser-capabilities.md).
+
+## Enable pairing from the HTTPS page
+
+The phone and laptop must both reach the signaling Worker over HTTPS. For a local Worker, use a separate temporary tunnel for port 8787. Keep the web app tunnel from Option 1 running or use the trusted HTTPS web origin from Option 2.
+
+1. Start the Worker, replacing the example with the exact web app origin. Include the port if you are using the LAN certificate.
+
+   ```sh
+   pnpm dev:signal --var ALLOWED_ORIGINS:https://example-web.trycloudflare.com
+   ```
+
+2. In a separate terminal, start the signaling tunnel and copy its HTTPS origin. [Cloudflare Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)
+
+   ```sh
+   cloudflared tunnel --url http://127.0.0.1:8787
+   ```
+
+3. Set `VITE_SIGNAL_URL` to that origin in the Vite terminal. In PowerShell use `$env:VITE_SIGNAL_URL = 'https://example-signal.trycloudflare.com'`. In Bash or Zsh use `export VITE_SIGNAL_URL=https://example-signal.trycloudflare.com`. Restart Vite with the same host and certificate settings as before. Use the same variable when building the app for an HTTPS deployment.
+4. On your laptop, open the HTTPS web app’s home page. Scan its QR code on your phone. Confirm that both pages show **Connected** and compare their verification codes.

@@ -41,3 +41,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Persist only the deadline or paired marker and each socket’s role. The local room logic accepts injected sockets and time so expiry and relay rules can be verified without waiting for alarms.
 - Accept browser requests from explicit configured origins. The room token still controls access to the specific room.
 - Allow the exact locked esbuild and workerd binary setup hooks needed by Wrangler. [pnpm build settings](https://pnpm.io/settings/build#allowbuilds)
+
+## T06 · WebRTC pairing
+
+- Check the effective SHA-256 fingerprint across SDP media sections before applying a remote description. The phone pins the laptop fingerprint from the QR fragment. Once the host accepts the first phone fingerprint, reuse that pin on later negotiations. Both devices display the existing four-digit SAS for comparison. [Pairing threat model](threat-model.md) · [WebRTC security architecture](https://www.rfc-editor.org/rfc/rfc8827.html)
+- Create the three channels on the laptop. Mark both interfaces Connected only after DTLS connects, all three channels open, and the SAS is available. Use the host as the impolite peer to resolve simultaneous offers on ICE restart. [WebRTC perfect negotiation](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Perfect_negotiation)
+- Use monotonic clocks for the eight-sample sync and a selected ICE pair for diagnostics. Copy the same status fields shown in the drawer so the report contains no room data or network addresses. [WebRTC statistics](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/getStats)

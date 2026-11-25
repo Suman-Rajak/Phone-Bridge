@@ -3,6 +3,7 @@ export default [
     ignores: [
       ".pnpm-store/",
       "**/dist/",
+      "**/.wrangler/",
       "coverage/",
       "playwright-report/",
       "test-results/",

@@ -1,0 +1,12 @@
+{
+  "name": "@phonebridge/rtc",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./state": "./src/pairing-state.ts"
+  },
+  "dependencies": {
+    "@phonebridge/protocol": "workspace:*"
+  }
+}
