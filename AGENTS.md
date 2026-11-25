@@ -148,7 +148,9 @@ Keep this list true to what exists today: add each command here in the PR that c
 
 ```
 pnpm install
-pnpm dev            # web app locally
+pnpm dev            # web app and local signaling Worker
+pnpm dev:web        # web app only
+pnpm dev:signal     # local signaling Worker only
 pnpm lint
 pnpm typecheck
 pnpm test           # Vitest

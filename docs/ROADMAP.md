@@ -233,7 +233,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Done when: the skills exist in the documented location and each ran once successfully. If skills are unsupported in this Codex, ask (2.4) and keep them as Markdown playbooks in `docs/automate/`.
 
 #### T05 · Signaling Worker
-- Stage: Build · Effort: high · Depends: T04 · Human: H1 only if `wrangler dev` needs login · Status: todo
+- Stage: Build · Effort: high · Depends: T04 · Human: H1 only if `wrangler dev` needs login · Status: in-progress
 - Build: `apps/signal`: create room with a 128-bit random token (base64url, 22 chars, `crypto.getRandomValues`); WebSocket messages `join {role: "host"|"phone", room}`, `peer-joined`, `sdp {description}`, `ice {candidate}`, `peer-left`, `error {code}`; relay `sdp`/`ice` between the two sockets only; one phone per room (second gets `room_full`); room expires 10 minutes after creation if unjoined (Durable Object alarm) and immediately when either side leaves; never log SDP, ICE or message contents.
 - Done when: unit tests with mocked sockets and time cover join, relay, room_full, expiry; runs with `wrangler dev`.
 - Verify: `pnpm test -- signal`

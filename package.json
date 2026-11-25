@@ -7,7 +7,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "pnpm --filter @phonebridge/web dev",
+    "dev": "pnpm --recursive --parallel --filter @phonebridge/web --filter @phonebridge/signal dev",
+    "dev:web": "pnpm --filter @phonebridge/web dev",
+    "dev:signal": "pnpm --filter @phonebridge/signal dev",
     "lint": "eslint . && prettier --check .",
     "typecheck": "tsc --project tsconfig.json",
     "test": "vitest run",
