@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="title description">
+  <title id="title">PhoneBridge connections</title>
+  <desc id="description">The laptop and phone load the frontend, exchange setup messages through a Worker, and send user content over an encrypted peer connection.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0l10 5-10 5z" fill="#366b59"/>
+    </marker>
+  </defs>
+  <rect width="920" height="430" rx="20" fill="#f4f7f6"/>
+  <g font-family="system-ui,sans-serif" text-anchor="middle" fill="#152822">
+    <text x="460" y="40" font-size="24" font-weight="700">PhoneBridge</text>
+    <g stroke="#81968a" stroke-width="2" fill="#fff">
+      <rect x="338" y="65" width="244" height="64" rx="12"/>
+      <rect x="330" y="172" width="260" height="84" rx="12"/>
+      <rect x="25" y="252" width="213" height="104" rx="12"/>
+      <rect x="682" y="252" width="213" height="104" rx="12"/>
+    </g>
+    <g stroke="#366b59" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M338 97H132v148"/>
+      <path d="M582 97h207v148"/>
+      <path d="M231 252l97-37" marker-start="url(#arrow)"/>
+      <path d="M591 215l97 37" marker-start="url(#arrow)"/>
+      <path d="M246 314h428" marker-start="url(#arrow)"/>
+    </g>
+    <g font-size="17" font-weight="700">
+      <text x="460" y="103">Cloudflare Pages</text>
+      <text x="460" y="207">Signaling Worker</text>
+      <text x="132" y="291">Laptop browser</text>
+      <text x="788" y="291">Phone browser</text>
+      <text x="460" y="300">Encrypted WebRTC</text>
+    </g>
+    <g font-size="14" fill="#4d6259">
+      <text x="218" y="87">HTTPS frontend</text>
+      <text x="702" y="87">HTTPS frontend</text>
+      <text x="460" y="230">Durable Object · SDP and ICE</text>
+      <text x="132" y="328">Workspace and exports</text>
+      <text x="788" y="328">Camera, touch, and sensors</text>
+      <text x="460" y="344">Control, files, pointer samples, and video</text>
+    </g>
+  </g>
+</svg>

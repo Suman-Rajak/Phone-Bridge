@@ -28,3 +28,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Pin the same OpenCV.js build in Node and the browser. Keep browser detection in a dedicated worker so scanner integration can load it independently of the main application. [ADR 0002](adr/0002-opencv-js.md)
 - Return source-image pixels. The preview resize rounds dimensions independently, so convert each axis back with its own scale.
 - Sample three positions per annotated SmartDoc sequence and count misses as zero. Preserve any existing baseline to keep follow-up benchmark runs reproducible. [SmartDoc setup](../understand/datasets.md)
+
+## T04 · Protocol and design
+
+- Use strict, flat versioned JSON objects. Validate expected sender and channel at the receive boundary.
+- Use UTF-8 byte length for clipboard limits and explicit UUID byte ordering for binary frames.
+- Canonicalize both fingerprints before sorting and hashing so the four-digit comparison code is stable across formatting and peer order. [Wire protocol](protocol.md)
