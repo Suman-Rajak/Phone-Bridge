@@ -96,7 +96,7 @@ export default function DiagnosticsPage() {
         <Card>
           {report ? (
             <table
-              className="w-full text-left text-sm"
+              className="w-full table-fixed text-left text-sm"
               aria-label="Browser capabilities"
             >
               <thead>
@@ -104,7 +104,7 @@ export default function DiagnosticsPage() {
                   <th scope="col" className="px-4 py-3 sm:px-6">
                     Capability
                   </th>
-                  <th scope="col" className="px-3 py-3 sm:px-6">
+                  <th scope="col" className="w-32 px-3 py-3 sm:w-52 sm:px-6">
                     Availability
                   </th>
                 </tr>
@@ -114,7 +114,7 @@ export default function DiagnosticsPage() {
                   <tr key={id} className="border-b border-line last:border-b-0">
                     <th
                       scope="row"
-                      className="px-4 py-3 font-semibold wrap-break-word sm:px-6"
+                      className="px-4 py-3 font-semibold wrap-anywhere sm:px-6"
                     >
                       {copy[id].name}
                       {status === "unavailable" && (

@@ -12,6 +12,6 @@ Delivered in [PR #2](https://github.com/Suman-Rajak/Phone-Bridge/pull/2). Two Vi
 
 ## T02 · Capability diagnostics and HTTPS development guide
 
-Implemented on `t02-capability-diagnostics`. The [browser capability matrix](../understand/browser-capabilities.md) and [HTTPS development guide](../ship/dev-https.md) cover browser and device setup. See the [session evidence](../evidence/sessions/T02.md).
+Delivered in [PR #3](https://github.com/Suman-Rajak/Phone-Bridge/pull/3). The diagnostics route checks ten capabilities. Twenty-six unit tests and six Chromium tests passed locally, with zero serious or critical axe findings. Local HTTPS and the tunnel hostname configuration passed server checks. See the [browser capability matrix](../understand/browser-capabilities.md), [HTTPS development guide](../ship/dev-https.md), and [session evidence](../evidence/sessions/T02.md).
 
 Next is T03, vision research, OpenCV packaging, detection, and baseline.

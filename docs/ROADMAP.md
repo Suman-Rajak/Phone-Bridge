@@ -182,7 +182,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test && pnpm test:e2e -- ui-gallery`
 
 #### T02 · Capability diagnostics + HTTPS dev guide
-- Stage: Understand · Effort: medium · Depends: T01 · Status: in-progress
+- Stage: Understand · Effort: medium · Depends: T01 · Status: done (PR #3)
 - Build: `/diagnostics` page that feature-detects camera, `ImageCapture`, `RelativeOrientationSensor`, `deviceorientation`, Clipboard read/write, File System Access, WebGL2, WebGPU, Document Picture-in-Picture, shown as a table. Write `docs/ship/dev-https.md`: step-by-step for making the dev server reachable over HTTPS from a phone (tunnel or locally trusted certificate). Write `docs/understand/browser-capabilities.md` (expected support; confirmed later by H3).
 - Done when: unit tests for each detector with mocked globals; page renders in Playwright Chromium.
 - Verify: `pnpm test && pnpm test:e2e -- diagnostics`

@@ -48,9 +48,14 @@ for (const { name, width, height, colorScheme } of views) {
       }
       if (name === "phone") {
         await page.setViewportSize({ width: 360, height });
-        expect(
-          await page.evaluate(() => document.documentElement.scrollWidth),
-        ).toBe(360);
+        await expect
+          .poll(() =>
+            page.evaluate(() => ({
+              viewport: window.innerWidth,
+              document: document.documentElement.scrollWidth,
+            })),
+          )
+          .toEqual({ viewport: 360, document: 360 });
       }
       await page.getByRole("link", { name: "PhoneBridge home" }).click();
       await expect(
@@ -63,6 +68,7 @@ for (const { name, width, height, colorScheme } of views) {
 test("diagnostics explains how to enable secure-context checks", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 360, height: 844 });
   await page.addInitScript(() => {
     Object.defineProperty(window, "isSecureContext", { value: false });
     Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
@@ -81,5 +87,8 @@ test("diagnostics explains how to enable secure-context checks", async ({
   await expect(webgl.getByRole("cell", { name: "Unavailable" })).toBeVisible();
   await expect(webgl).toContainText(
     "Try a browser or device with WebGL2 enabled.",
+  );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    360,
   );
 });
