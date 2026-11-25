@@ -206,7 +206,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test -- vision && pnpm bench:vision`
 
 #### T04 · Plan, design docs, protocol package
-- Stage: Plan · Effort: high (xhigh for the threat model) · Depends: T01 · Status: todo
+- Stage: Plan · Effort: high (xhigh for the threat model) · Depends: T01 · Status: done (PR #5)
 - Build: `docs/plan/prd.md`; `docs/design/architecture.md` with an SVG diagram; `docs/design/protocol.md`; `docs/design/threat-model.md`; ADR-0001 (signaling host: Cloudflare Worker + Durable Object, fallback Node + `ws`), ADR-0003 (WebGL2 first). Implement `packages/protocol`:
   - **Envelope:** `{ v: 1, id: uuid, t: senderMs, type, ...payload }`; on `v` mismatch reply `error {code: "version_mismatch"}`.
   - **Messages (zod schema each, validated on receive):**

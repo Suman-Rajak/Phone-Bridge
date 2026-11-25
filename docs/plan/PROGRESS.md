@@ -18,4 +18,8 @@ Delivered in [PR #3](https://github.com/Suman-Rajak/Phone-Bridge/pull/3). The di
 
 Delivered the OpenCV package, worker, detector, and SmartDoc benchmark runner in [PR #4](https://github.com/Suman-Rajak/Phone-Bridge/pull/4). Maximum refine corner error was 1.452 px across six synthetic pages. The SmartDoc baseline is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T03.md).
 
-Next is T04, plan, design docs, and protocol package.
+## T04 · Plan, design docs, and protocol package
+
+Delivered the product requirements, architecture, threat model, and versioned protocol package in [PR #5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5). Local verification passed with 69 unit tests and seven Chromium tests. See the [session evidence](../evidence/sessions/T04.md).
+
+Next is T04S, Codex skills.

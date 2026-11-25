@@ -15,3 +15,11 @@
 - Cause — The table relied on intrinsic column widths and the test sampled layout immediately after resizing.
 - Fix — Constrain the table columns, let long labels wrap, and check layout once the viewport resize is reflected in the page.
 - PR — [#3](https://github.com/Suman-Rajak/Phone-Bridge/pull/3).
+
+## T04 · Chromium gallery reload during worker startup
+
+- Symptom — The gallery’s axe scan loses its page context while the vision worker test is running.
+- Reproduction — Run the full Playwright suite with a cold Vite dependency cache and the default parallel workers.
+- Cause — Vite discovers the worker’s OpenCV dependency and reloads active development pages.
+- Fix — Disable Vite hot updates on the Playwright-owned server.
+- PR — [#5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5).
