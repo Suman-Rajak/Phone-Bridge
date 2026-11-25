@@ -30,4 +30,8 @@ Authored and discovered all three repository skills in [PR #6](https://github.co
 
 Delivered the local Wrangler Worker, typed signaling contract, and Durable Object rooms in [PR #7](https://github.com/Suman-Rajak/Phone-Bridge/pull/7). Verified real loopback WebSocket relay and cleanup. Local Wrangler required no Cloudflare login. See the [session evidence](../evidence/sessions/T05.md).
 
-Next is T06, pairing, channels, clock sync, and connection diagnostics.
+## T06 · WebRTC pairing
+
+Delivered QR pairing, the pinned DTLS fingerprint, all three data channels, clock sync, and the connection diagnostics drawer in [PR #8](https://github.com/Suman-Rajak/Phone-Bridge/pull/8). Local verification passed with 91 unit tests and nine browser tests. Separate browser contexts connected within five seconds after QR setup. See the [session evidence](../evidence/sessions/T06.md).
+
+Next is T07, real-device pairing on Wi-Fi and a phone hotspot, with H2 and H3.

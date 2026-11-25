@@ -30,3 +30,4 @@
 - Reproduction — Run the pairing browser tests, then run `pnpm lint` with the generated Wrangler directory present.
 - Cause — ESLint and Prettier traversed Wrangler’s local build output.
 - Fix — Exclude Wrangler’s generated directories from source checks.
+- PR — [#8](https://github.com/Suman-Rajak/Phone-Bridge/pull/8).
