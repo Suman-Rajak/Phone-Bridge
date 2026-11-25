@@ -28,6 +28,6 @@ Authored and discovered all three repository skills in [PR #6](https://github.co
 
 ## T05 · Signaling Worker
 
-Implemented the local Wrangler Worker, typed signaling contract, and Durable Object room lifecycle. See the [session evidence](../evidence/sessions/T05.md).
+Delivered the local Wrangler Worker, typed signaling contract, and Durable Object rooms in [PR #7](https://github.com/Suman-Rajak/Phone-Bridge/pull/7). Verified real loopback WebSocket relay and cleanup. Local Wrangler required no Cloudflare login. See the [session evidence](../evidence/sessions/T05.md).
 
 Next is T06, pairing, channels, clock sync, and connection diagnostics.
