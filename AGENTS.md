@@ -146,13 +146,12 @@ Keep this list true to what exists today: add each command here in the PR that c
 
 ```
 pnpm install
-pnpm dev            # web app + signaling Worker locally
+pnpm dev            # web app locally
 pnpm lint
 pnpm typecheck
-pnpm test           # Vitest
-pnpm test:e2e       # Playwright (starts web + `wrangler dev`)
-pnpm bench:vision   # SmartDoc corner benchmark (downloads dataset if missing)
-pnpm evidence       # regenerate docs/evidence/EVIDENCE.md and evidence.json
+pnpm test           # Vitest unit tests
+pnpm --filter @phonebridge/web build
+pnpm evidence       # print Codex commit trailers
 ```
 
 ## Code style
