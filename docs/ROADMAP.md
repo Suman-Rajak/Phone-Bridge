@@ -154,7 +154,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 ### Phase 1 — Foundation (week 1)
 
 #### T01 · Repo foundation
-- Stage: Build · Effort: medium · Depends: — · Status: todo
+- Stage: Build · Effort: medium · Depends: — · Status: in-progress
 - Build: pnpm monorepo with the layout in 2.8; TypeScript strict; ESLint + Prettier; Vitest with one sample test; minimal Vite + React app in `apps/web` showing "PhoneBridge"; Tailwind v4; GitHub Actions running lint, typecheck, unit tests on every PR; `scripts/evidence.ts` stub that prints commit trailers; create `docs/plan/PROGRESS.md`, `docs/plan/QUESTIONS.md`, `docs/design/decisions.md`, `docs/test/bug-log.md`, and `README.md` with a Setup section that every later task keeps accurate.
 - Done when: `pnpm install`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm dev` all work; CI passes on the PR.
 - Verify: `pnpm install && pnpm lint && pnpm typecheck && pnpm test`
