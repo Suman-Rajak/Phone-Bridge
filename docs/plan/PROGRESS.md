@@ -46,4 +46,8 @@ Added rear-camera preview and document detection on the paired phone in [PR #10]
 
 Delivered automatic and manual capture and verified scan delivery in [PR #11](https://github.com/Suman-Rajak/Phone-Bridge/pull/11). Local verification passed with 97 unit tests and eleven browser tests. The phone and laptop reported matching JPEG dimensions and SHA-256, and a digest mismatch preserved the previous scan. See the [session evidence](../evidence/sessions/T09.md).
 
-Next is T10, page rectification, enhancement, and the scan tray.
+## T10 · Page rectification and tray
+
+Delivered page straightening, four appearance modes, and tray editing in [PR #12](https://github.com/Suman-Rajak/Phone-Bridge/pull/12). Four synthetic landmarks landed within two pixels. All four appearance goldens matched, and 106 unit tests and twelve Chromium tests passed locally. The tray preserves verified pages during a disconnect. See the [session evidence](../evidence/sessions/T10.md).
+
+Next is T11, multi-page PDF export with a size target.

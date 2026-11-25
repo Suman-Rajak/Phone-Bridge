@@ -1,5 +1,6 @@
 import cvModule from "@techstark/opencv-js";
 import { detectDocument } from "./detect.ts";
+import { preparePage } from "./prepare-page.ts";
 import { laplacianVariance } from "./sharpness.ts";
 import type { OpenCvRuntime } from "./opencv.ts";
 import type { Frame } from "./types.ts";
@@ -35,6 +36,8 @@ worker.onmessage = async ({ data: request }) => {
         context = surface.getContext("2d", { willReadFrequently: true });
       }
       worker.postMessage({ id, ready: true, acceptsBitmap: context !== null });
+    } else if ("page" in request) {
+      worker.postMessage({ id, page: await preparePage(cv, request.page) });
     } else {
       const frame =
         "bitmap" in request ? frameFromBitmap(request.bitmap) : request.frame;

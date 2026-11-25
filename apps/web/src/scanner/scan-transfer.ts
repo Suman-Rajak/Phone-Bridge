@@ -6,7 +6,8 @@ import type { ScanMediaResult } from "./scan-media";
 import { runScanMedia } from "./scan-media-client";
 
 type ScanMeta = Extract<TransferMessage, { type: "scan.meta" }>;
-type ScanDetails = Pick<ScanMeta, "corners" | "capturedAt">;
+type ScanDetails = Pick<ScanMeta, "corners" | "capturedAt" | "replacesScanId">;
+export type RetakeRequest = { scanId: string; requestId: string };
 type TransferPeer = Pick<
   PairingSession,
   "observeTransfers" | "sendTransferControl" | "sendTransferBytes"
@@ -160,7 +161,11 @@ type Pending = {
 /** Accept one bounded scan at a time and publish its JPEG after worker verification. */
 export function receiveScans(
   peer: ReceivePeer,
-  callbacks: { received(scan: ReceivedScan): void; failed(): void },
+  callbacks: {
+    received(scan: ReceivedScan): void;
+    failed(): void;
+    acceptReplacement?(id: string): boolean;
+  },
 ): () => void {
   let active: Pending | undefined;
   function clear(scan: Pending) {
@@ -214,6 +219,8 @@ export function receiveScans(
       if (message.type === "scan.meta") {
         if (
           active ||
+          (message.replacesScanId &&
+            !callbacks.acceptReplacement?.(message.replacesScanId)) ||
           message.bytes > scanSizeLimit ||
           message.width * message.height > scanPixelLimit
         ) {
@@ -237,7 +244,11 @@ export function receiveScans(
         }
         return;
       }
-      if (!active || message.transferId !== active.buffer.metadata.scanId)
+      if (
+        !active ||
+        !("transferId" in message) ||
+        message.transferId !== active.buffer.metadata.scanId
+      )
         return;
       if (message.type === "file.cancel") clear(active);
       if (message.type === "file.done" && !active.sha256) {

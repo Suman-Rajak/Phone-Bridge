@@ -1,11 +1,28 @@
-import type { Detection, DetectionMode, Frame } from "./types.ts";
+import type { Corners, Detection, DetectionMode, Frame } from "./types.ts";
+import type { PageMode, PageRotation, PageSize } from "./rectify.ts";
+
+export type PageRequest = {
+  jpeg: Blob;
+  phoneCorners?: Corners;
+  corners?: Corners;
+  mode: PageMode;
+  rotation: PageRotation;
+};
+
+export type PageResult = PageSize & {
+  jpeg: Blob;
+  thumbnail: Blob;
+  corners: Corners;
+};
 
 export type VisionRequest =
   | { id: number; initialize: true }
+  | { id: number; page: PageRequest }
   | { id: number; frame: Frame; mode: DetectionMode }
   | { id: number; bitmap: ImageBitmap; mode: DetectionMode };
 export type VisionResponse =
   | { id: number; ready: true; acceptsBitmap: boolean }
+  | { id: number; page: PageResult }
   | { id: number; detection: Detection | null; sharpness?: number }
   | { id: number; error: { code: "vision_failed"; message: string } };
 

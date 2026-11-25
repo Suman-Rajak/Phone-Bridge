@@ -63,6 +63,11 @@ const samples = {
       ],
     },
   },
+  "scan.retake": {
+    from: laptop,
+    valid: { scanId: id },
+    invalid: { scanId: "invalid" },
+  },
   "file.offer": {
     from: laptop,
     valid: {
@@ -167,6 +172,12 @@ test("enforces the UTF-8 clipboard boundary with multibyte text", () => {
 test("rejects messages on the wrong channel or from the wrong peer", () => {
   expect(
     validateMessage(
+      { ...base, type: "scan.retake", scanId: id },
+      { from: phone, channel: "control" },
+    ),
+  ).toEqual({ ok: false, code: "wrong_sender" });
+  expect(
+    validateMessage(
       { ...base, type: "pointer.sample", ...samples["pointer.sample"].valid },
       { from: phone, channel: "control" },
     ),
@@ -195,6 +206,17 @@ test("rejects messages on the wrong channel or from the wrong peer", () => {
       { from: phone, channel: "control" },
     ),
   ).toEqual({ ok: false, code: "wrong_sender" });
+});
+
+test("validates the optional replacement ID on scan metadata", () => {
+  const message = { ...base, type: "scan.meta", ...samples["scan.meta"].valid };
+  const context = { from: phone, channel: "control" } as const;
+  expect(validateMessage({ ...message, replacesScanId: id }, context).ok).toBe(
+    true,
+  );
+  expect(
+    validateMessage({ ...message, replacesScanId: "invalid" }, context),
+  ).toEqual({ ok: false, code: "invalid_message" });
 });
 
 test("returns a v1 error payload for an unsupported version without creating an error loop", () => {
