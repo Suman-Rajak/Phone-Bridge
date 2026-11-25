@@ -72,3 +72,10 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Capture the tray’s page order and appearance when opening the export drawer. JPEG downscaling changes encoded resolution while keeping the PDF page’s A4 or 200 DPI dimensions.
 - Treat 1 KB as 1,000 bytes. Reserve 4 KB per page for document overhead and allocate the remaining bytes by the pages’ quality-0.8 JPEG weights. The worker verifies the complete PDF length and reports the exact size.
 - Produce PDF files locally with the browser’s JPEG encoder and use PDF.js to check their page order in tests. [ADR 0004](adr/0004-pdf-export-and-verification.md)
+
+## T13 · File transfer
+
+- Reuse the scanner’s ordered frame validation and WebRTC backpressure. Keep one active incoming file and one active outgoing file per device. Canceling the upload also clears the remaining selections in that batch. [File transfer contract](protocol.md#file-transfer)
+- Hash the file in a dedicated worker before saving it. Retain a verified Blob until the user removes it or leaves the page. On browsers that support the native save picker, offer it from the Save file button and offer browser download if saving fails. [File picker](https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker) · [Web Crypto digest](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
+- Show rate calculated from received or queued bytes since acceptance. The browser test records verified receiver throughput for both directions separately.
+- Read each outgoing file in blocks of 64 wire chunks. Hand the receiver's chunks to its hash worker in small batches so large file reads and verification keep the interface responsive.

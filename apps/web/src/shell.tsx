@@ -23,6 +23,7 @@ import { Brand, Button, Card, EmptyState, Spinner } from "./ui/primitives";
 
 const ScanPreview = lazy(() => import("./scanner/scan-preview"));
 const ScanInbox = lazy(() => import("./scanner/scan-inbox"));
+const FilePanel = lazy(() => import("./files/file-panel"));
 
 function AppHeader({ snapshot }: { snapshot: PairingSnapshot }) {
   return (
@@ -75,31 +76,38 @@ export function LaptopShell() {
             </p>
           )}
         </div>
-        <Card className="pairing-card">
-          {failure ? (
-            <PairingError failure={failure} reconnect={reconnect} />
-          ) : connected && sas ? (
-            <VerificationCode sas={sas} />
-          ) : (
-            <>
-              {url && phase === "waiting" ? (
-                <PairingCode key={url} url={url} />
-              ) : (
-                <div className="pairing-illustration" aria-hidden="true">
-                  <QrCode />
-                </div>
-              )}
-              <h2>Pair with a QR code</h2>
-              <p className="muted">
-                {phase === "connecting"
-                  ? "Connecting to your phone…"
-                  : url
-                    ? "Scan with your phone’s camera."
-                    : "Preparing your pairing code…"}
-              </p>
-            </>
+        <div className="laptop-side">
+          <Card className="pairing-card">
+            {failure ? (
+              <PairingError failure={failure} reconnect={reconnect} />
+            ) : connected && sas ? (
+              <VerificationCode sas={sas} />
+            ) : (
+              <>
+                {url && phase === "waiting" ? (
+                  <PairingCode key={url} url={url} />
+                ) : (
+                  <div className="pairing-illustration" aria-hidden="true">
+                    <QrCode />
+                  </div>
+                )}
+                <h2>Pair with a QR code</h2>
+                <p className="muted">
+                  {phase === "connecting"
+                    ? "Connecting to your phone…"
+                    : url
+                      ? "Scan with your phone’s camera."
+                      : "Preparing your pairing code…"}
+                </p>
+              </>
+            )}
+          </Card>
+          {(connected || hasTray) && (
+            <Suspense fallback={<Spinner label="Loading files" />}>
+              <FilePanel session={connected ? session : null} allowDrop />
+            </Suspense>
           )}
-        </Card>
+        </div>
         {(connected || hasTray) && (
           <Suspense fallback={<Spinner label="Loading scanner" />}>
             <ScanInbox session={connected ? session : null} />
@@ -197,6 +205,19 @@ export function PhoneShell({ room }: { room: string }) {
       <AppHeader snapshot={snapshot} />
       <main className="phone-main">
         <h1>{mode.title}</h1>
+        {session && (
+          <Suspense
+            fallback={
+              mode.id === "clipboard" ? <Spinner label="Loading files" /> : null
+            }
+          >
+            <FilePanel
+              session={phase === "connected" ? session : null}
+              visible={mode.id === "clipboard"}
+              showFiles={() => setMode(modes[4])}
+            />
+          </Suspense>
+        )}
         <Card className={showScanner ? "scan-workspace" : "phone-workspace"}>
           {failure ? (
             <PairingError failure={failure} />

@@ -33,6 +33,7 @@ export type TransferMessage = Extract<
     type:
       | "scan.meta"
       | "scan.retake"
+      | "file.offer"
       | "file.accept"
       | "file.reject"
       | "file.done"
@@ -204,12 +205,13 @@ export class PairingSession {
     source: Blob,
     transferId: string,
     signal: AbortSignal,
+    progress?: (bytes: number) => void,
   ): Promise<void> {
     const channel = this.channels.get("bulk");
     if (this.state.phase !== "connected" || !channel) {
       return Promise.reject(new Error("The transfer connection closed."));
     }
-    return sendBulk(channel, source, transferId, signal);
+    return sendBulk(channel, source, transferId, signal, progress);
   }
 
   private publish(update: Partial<PairingSnapshot>): void {
@@ -543,6 +545,7 @@ export class PairingSession {
     switch (message.type) {
       case "scan.meta":
       case "scan.retake":
+      case "file.offer":
       case "file.accept":
       case "file.reject":
       case "file.done":

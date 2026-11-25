@@ -1,5 +1,4 @@
-import { chunkPayloadMaxBytes } from "@phonebridge/protocol";
-import type { BulkChunk } from "@phonebridge/protocol";
+import { BulkBuffer } from "@phonebridge/rtc";
 import type { PairingSession, TransferMessage } from "@phonebridge/rtc";
 import { scanPixelLimit, scanSizeLimit } from "./scan-media";
 import type { ScanMediaResult } from "./scan-media";
@@ -117,36 +116,9 @@ export async function sendScan(
   }
 }
 
-export class ScanBuffer {
-  readonly total: number;
-  private readonly parts: ArrayBuffer[] = [];
-
+export class ScanBuffer extends BulkBuffer {
   constructor(readonly metadata: ScanMeta) {
-    this.total = Math.ceil(metadata.bytes / chunkPayloadMaxBytes);
-  }
-
-  get complete(): boolean {
-    return this.parts.length === this.total;
-  }
-
-  push(chunk: BulkChunk): boolean {
-    const size = Math.min(
-      chunkPayloadMaxBytes,
-      this.metadata.bytes - chunk.index * chunkPayloadMaxBytes,
-    );
-    if (
-      chunk.transferId !== this.metadata.scanId ||
-      chunk.total !== this.total ||
-      chunk.index !== this.parts.length ||
-      chunk.payload.byteLength !== size
-    )
-      return false;
-    this.parts.push(chunk.payload.slice().buffer);
-    return true;
-  }
-
-  takeParts(): ArrayBuffer[] {
-    return this.parts.splice(0);
+    super(metadata.scanId, metadata.bytes);
   }
 }
 
