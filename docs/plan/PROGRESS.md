@@ -38,4 +38,8 @@ Delivered QR pairing, the pinned DTLS fingerprint, all three data channels, cloc
 
 The [device test matrix](../test/device-matrix.md) is ready for the Wi-Fi and phone-hotspot checks. T07 remains blocked on [H2 and H3 results](QUESTIONS.md#h2-and-h3--real-device-pairing-t07).
 
-Next is T08, phone preview detection.
+## T08 · Phone scanner preview
+
+Added rear-camera preview and document detection on the paired phone in [PR #10](https://github.com/Suman-Rajak/Phone-Bridge/pull/10). The Chromium fixture showed four detected corners, roughly 15 fps, and zero main-thread tasks over 50 ms during startup and detection. The laptop and dark phone passed axe with no serious or critical findings. The SmartDoc benchmark remains blocked on H5. See the [session evidence](../evidence/sessions/T08.md).
+
+Next is T09, capture and send.
