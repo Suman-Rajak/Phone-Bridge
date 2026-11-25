@@ -54,4 +54,10 @@ Delivered page straightening, four appearance modes, and tray editing in [PR #12
 
 Delivered ordered PDF export in [PR #13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13). The browser exported five pages into 479,236 bytes against a 500,000-byte target, and PDF.js verified their order. Local verification passed with 109 unit tests and fourteen browser tests. See the [session evidence](../evidence/sessions/T11.md).
 
-T12 is waiting on the SmartDoc archive and baseline in [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). Next is T13, file transfer.
+T12 is waiting on the SmartDoc archive and baseline in [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark).
+
+## T13 · Bidirectional file transfer
+
+Delivered file pickers, laptop drag and drop, confirmation, progress, verified saving, and cancellation in [PR #14](https://github.com/Suman-Rajak/Phone-Bridge/pull/14). Chromium transferred and downloaded 100 MB each way with matching SHA-256. The optimized focused loopback run measured 2.70 MB/s laptop to phone and 2.97 MB/s in reverse. The same-Wi-Fi goal still needs a physical-device run. See the [session evidence](../evidence/sessions/T13.md).
+
+Next is T14, text clipboard.

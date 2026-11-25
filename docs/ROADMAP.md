@@ -293,7 +293,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Done when: a temporary breaking commit makes CI fail; reverting makes it pass.
 
 #### T13 · File drop
-- Stage: Build · Effort: high · Depends: T06 · Status: in-progress
+- Stage: Build · Effort: high · Depends: T06 · Status: done (PR #14)
 - Build: laptop drop zone + picker; phone `<input type="file" multiple>`; `file.offer` → auto-accept ≤ 50 MB, ask above → 16 KiB chunks on `bulk` with `bufferedAmountLowThreshold` = 1 MiB, pause above 8 MiB `bufferedAmount`, resume on `bufferedamountlow` → `file.done` with SHA-256 (`crypto.subtle.digest`) checked by the receiver; limit 500 MB; save with `showSaveFilePicker` where available else Blob download; progress with MB/s and cancel on both sides; sanitize received file names.
 - Done when: 100 MB both ways with matching hashes; cancel frees memory; throughput logged.
 - Verify: `pnpm test:e2e -- files`
