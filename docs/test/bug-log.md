@@ -22,4 +22,4 @@
 - Reproduction — Run the full Playwright suite with a cold Vite dependency cache and the default parallel workers.
 - Cause — Vite discovers the worker’s OpenCV dependency and reloads active development pages.
 - Fix — Disable Vite hot updates on the Playwright-owned server.
-- PR — Pending publication.
+- PR — [#5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5).

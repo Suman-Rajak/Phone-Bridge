@@ -20,6 +20,6 @@ Delivered the OpenCV package, worker, detector, and SmartDoc benchmark runner in
 
 ## T04 · Plan, design docs, and protocol package
 
-Implemented the product requirements, architecture, threat model, and versioned protocol package. See the [session evidence](../evidence/sessions/T04.md).
+Delivered the product requirements, architecture, threat model, and versioned protocol package in [PR #5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5). Local verification passed with 69 unit tests and seven Chromium tests. See the [session evidence](../evidence/sessions/T04.md).
 
 Next is T04S, Codex skills.
