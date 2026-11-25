@@ -296,6 +296,9 @@
 .pairing-card {
   @apply grid min-h-80 content-center justify-items-center gap-3 p-6 text-center;
 }
+.laptop-side {
+  display: contents;
+}
 .pairing-card h2 {
   @apply text-xl font-semibold tracking-tight;
 }
@@ -362,9 +365,15 @@
   .laptop-main[data-connected="true"] .intro {
     grid-column: 1 / -1;
   }
+  .laptop-main[data-connected="true"] .laptop-side {
+    @apply grid content-start gap-4;
+    grid-column: 2;
+    grid-row: 2;
+  }
   .laptop-main[data-connected="true"] .pairing-card {
     @apply min-h-64 self-start;
-    grid-row: 2;
+    grid-column: auto;
+    grid-row: auto;
   }
   .laptop-main[data-connected="true"] .scan-inbox {
     grid-column: 1;
@@ -425,7 +434,7 @@
   @apply flex flex-wrap justify-center gap-2;
 }
 .scan-inbox {
-  @apply grid min-w-0 gap-4 p-6 lg:col-span-2;
+  @apply grid min-w-0 content-start gap-4 self-start p-6 lg:col-span-2;
 }
 .scan-inbox h2 {
   @apply text-xl font-semibold tracking-tight;
@@ -447,6 +456,33 @@
 }
 .pdf-result output {
   @apply font-semibold tabular-nums;
+}
+.files-panel {
+  @apply grid min-w-0 gap-4 p-4;
+}
+.files-panel h2 {
+  @apply text-xl font-semibold tracking-tight;
+}
+.file-drop-zone {
+  @apply grid justify-items-center gap-2 rounded-control border border-dashed border-line bg-subtle p-4;
+}
+.file-drop-zone[data-dragging="true"] {
+  @apply border-accent bg-accent-soft;
+}
+.file-picker {
+  @apply flex flex-wrap gap-2;
+}
+.file-receipts {
+  @apply grid gap-3;
+}
+.file-row {
+  @apply grid min-w-0 gap-2 rounded-control border border-line bg-canvas p-3;
+}
+.file-name {
+  overflow-wrap: anywhere;
+}
+.file-actions {
+  @apply flex flex-wrap gap-2;
 }
 .scan-inbox figure {
   @apply grid justify-items-center gap-3 text-sm text-muted;

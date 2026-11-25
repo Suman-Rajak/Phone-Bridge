@@ -2,6 +2,7 @@ import { chunkPayloadMaxBytes, encodeChunk } from "@phonebridge/protocol";
 
 const resumeAt = 1024 * 1024;
 const pauseAt = 8 * 1024 * 1024;
+const readBytes = 64 * chunkPayloadMaxBytes;
 
 function waitForCapacity(
   channel: RTCDataChannel,
@@ -42,26 +43,35 @@ export async function sendBulk(
   source: Blob,
   transferId: string,
   signal: AbortSignal,
+  progress?: (bytes: number) => void,
 ): Promise<void> {
   const total = Math.ceil(source.size / chunkPayloadMaxBytes);
   channel.bufferedAmountLowThreshold = resumeAt;
-  for (let index = 0; index < total; index++) {
+  for (let offset = 0; offset < source.size; offset += readBytes) {
     signal.throwIfAborted();
-    if (channel.readyState !== "open")
-      throw new Error("The bulk channel closed.");
-    if (channel.bufferedAmount >= pauseAt)
-      await waitForCapacity(channel, signal);
-    const offset = index * chunkPayloadMaxBytes;
-    const bytes = await source
-      .slice(offset, offset + chunkPayloadMaxBytes)
-      .arrayBuffer();
-    signal.throwIfAborted();
-    const frame = encodeChunk({
-      transferId,
-      index,
-      total,
-      payload: new Uint8Array(bytes),
-    });
-    channel.send(frame.buffer as ArrayBuffer);
+    const block = new Uint8Array(
+      await source.slice(offset, offset + readBytes).arrayBuffer(),
+    );
+    for (
+      let cursor = 0;
+      cursor < block.byteLength;
+      cursor += chunkPayloadMaxBytes
+    ) {
+      signal.throwIfAborted();
+      if (channel.readyState !== "open")
+        throw new Error("The bulk channel closed.");
+      if (channel.bufferedAmount >= pauseAt)
+        await waitForCapacity(channel, signal);
+      signal.throwIfAborted();
+      const payload = block.subarray(cursor, cursor + chunkPayloadMaxBytes);
+      const frame = encodeChunk({
+        transferId,
+        index: (offset + cursor) / chunkPayloadMaxBytes,
+        total,
+        payload,
+      });
+      channel.send(frame.buffer as ArrayBuffer);
+      progress?.(offset + cursor + payload.byteLength);
+    }
   }
 }

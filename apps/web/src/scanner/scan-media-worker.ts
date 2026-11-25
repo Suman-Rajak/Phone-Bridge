@@ -78,16 +78,10 @@ async function inspect(jpeg: Blob): Promise<ScanMediaResult> {
   ) {
     throw new Error("The scan is not a supported JPEG.");
   }
-  if (typeof globalThis.crypto?.subtle?.digest !== "function") {
-    throw new Error("This browser cannot verify scan integrity.");
-  }
-  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
   return {
     jpeg,
     ...size,
-    sha256: Array.from(digest, (byte) =>
-      byte.toString(16).padStart(2, "0"),
-    ).join(""),
+    sha256: await sha256(bytes),
   };
 }
 
@@ -124,3 +118,4 @@ worker.onmessage = async ({ data }) => {
     });
   }
 };
+import { sha256 } from "../worker/sha256";
