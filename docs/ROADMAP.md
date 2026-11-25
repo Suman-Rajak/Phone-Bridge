@@ -266,7 +266,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test:e2e -- scan-detect`
 
 #### T09 · Capture and send
-- Stage: Build · Effort: high · Depends: T08 · Status: todo
+- Stage: Build · Effort: high · Depends: T08 · Status: in-progress
 - Build: auto-capture when for 500 ms (a) no corner moved more than 1.5% of the frame diagonal and (b) variance of the Laplacian of the 320 px grayscale frame ≥ 100 (*tune*); manual shutter always works; full-res capture via `ImageCapture.takePhoto()` where available, else draw the current frame at full track resolution; JPEG quality 0.92; send `scan.meta` (with normalized corners) + bulk transfer with SHA-256 check.
 - Done when: E2E capture arrives on the laptop with a matching hash.
 - Verify: `pnpm test:e2e -- scan-capture`

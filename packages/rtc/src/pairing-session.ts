@@ -1,5 +1,6 @@
 import {
   decodeMessage,
+  decodeChunk,
   decodeSignalServer,
   deriveSas,
   normalizeFingerprint,
@@ -7,6 +8,7 @@ import {
   roomTokenSchema,
 } from "@phonebridge/protocol";
 import type {
+  BulkChunk,
   Message,
   SignalClientMessage,
   SignalRole,
@@ -23,6 +25,23 @@ import {
 } from "./fingerprint.ts";
 import { initialPairing } from "./pairing-state.ts";
 import type { PairingFailure, PairingSnapshot } from "./pairing-state.ts";
+import { sendBulk } from "./bulk-transfer.ts";
+
+export type TransferMessage = Extract<
+  Message,
+  {
+    type:
+      "scan.meta" | "file.accept" | "file.reject" | "file.done" | "file.cancel";
+  }
+>;
+
+type ControlPayload<Control extends Message> = Control extends Message
+  ? Omit<Control, "v" | "id" | "t">
+  : never;
+type TransferObserver = {
+  control?(message: TransferMessage): void;
+  bulk?(chunk: BulkChunk): void;
+};
 
 type PairingOptions = {
   role: SignalRole;
@@ -53,6 +72,7 @@ export class PairingSession {
   private incoming = Promise.resolve();
   private readonly abort = new AbortController();
   private readonly channels = new Map<ChannelName, RTCDataChannel>();
+  private readonly transferObservers = new Set<TransferObserver>();
   private statsTimer: ReturnType<typeof setInterval> | undefined;
   private clockTimer: ReturnType<typeof setInterval> | undefined;
   private restartTimer: ReturnType<typeof setTimeout> | undefined;
@@ -154,6 +174,37 @@ export class PairingSession {
     this.socket?.close();
     this.peer?.close();
     this.pendingPings.clear();
+    this.transferObservers.clear();
+  }
+
+  /** Observe transfer messages after wire validation. */
+  observeTransfers(observer: TransferObserver): () => void {
+    this.transferObservers.add(observer);
+    return () => this.transferObservers.delete(observer);
+  }
+
+  /** Send one typed transfer message over the ordered control channel. */
+  sendTransferControl(payload: ControlPayload<TransferMessage>): void {
+    if (
+      this.state.phase !== "connected" ||
+      this.channels.get("control")?.readyState !== "open"
+    ) {
+      throw new Error("The transfer connection closed.");
+    }
+    this.sendControl(payload);
+  }
+
+  /** Stream blob bytes over the reliable bulk channel. */
+  sendTransferBytes(
+    source: Blob,
+    transferId: string,
+    signal: AbortSignal,
+  ): Promise<void> {
+    const channel = this.channels.get("bulk");
+    if (this.state.phase !== "connected" || !channel) {
+      return Promise.reject(new Error("The transfer connection closed."));
+    }
+    return sendBulk(channel, source, transferId, signal);
   }
 
   private publish(update: Partial<PairingSnapshot>): void {
@@ -346,7 +397,20 @@ export class PairingSession {
       return;
     }
     this.channels.set(name, channel);
-    if (name === "bulk") channel.binaryType = "arraybuffer";
+    if (name === "bulk") {
+      channel.binaryType = "arraybuffer";
+      channel.onmessage = ({ data }) => {
+        if (!(data instanceof ArrayBuffer)) return;
+        let chunk: BulkChunk;
+        try {
+          chunk = decodeChunk(new Uint8Array(data));
+        } catch {
+          // Malformed frames must never reach a transfer consumer.
+          return;
+        }
+        for (const observer of this.transferObservers) observer.bulk?.(chunk);
+      };
+    }
     channel.onopen = () => this.updateConnection();
     channel.onclose = () => {
       if (this.state.phase === "connected") this.fail("disconnected");
@@ -426,10 +490,10 @@ export class PairingSession {
 
   private sendControl(
     payload:
-      | Omit<Extract<Message, { type: "hello" }>, "v" | "id" | "t">
-      | Omit<Extract<Message, { type: "ping" }>, "v" | "id" | "t">
-      | Omit<Extract<Message, { type: "pong" }>, "v" | "id" | "t">
-      | Omit<Extract<Message, { type: "error" }>, "v" | "id" | "t">,
+      | ControlPayload<
+          Extract<Message, { type: "hello" | "ping" | "pong" | "error" }>
+        >
+      | ControlPayload<TransferMessage>,
     t = performance.now(),
   ): void {
     const channel = this.channels.get("control");
@@ -471,6 +535,16 @@ export class PairingSession {
       return;
     }
     const message = received.message;
+    switch (message.type) {
+      case "scan.meta":
+      case "file.accept":
+      case "file.reject":
+      case "file.done":
+      case "file.cancel":
+        for (const observer of this.transferObservers)
+          observer.control?.(message);
+        return;
+    }
     if (message.type === "ping") {
       const reply = performance.now();
       this.sendControl(

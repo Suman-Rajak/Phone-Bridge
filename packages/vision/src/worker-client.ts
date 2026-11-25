@@ -6,7 +6,7 @@ export type VisionRequest =
   | { id: number; bitmap: ImageBitmap; mode: DetectionMode };
 export type VisionResponse =
   | { id: number; ready: true; acceptsBitmap: boolean }
-  | { id: number; detection: Detection | null }
+  | { id: number; detection: Detection | null; sharpness?: number }
   | { id: number; error: { code: "vision_failed"; message: string } };
 
 /** Start a dedicated worker that owns OpenCV and accepts RGBA detection requests. */

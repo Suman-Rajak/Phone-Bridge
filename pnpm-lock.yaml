@@ -48,6 +48,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@phonebridge/protocol':
+        specifier: workspace:*
+        version: link:../../packages/protocol
       '@phonebridge/rtc':
         specifier: workspace:*
         version: link:../../packages/rtc

@@ -21,6 +21,7 @@ import {
 import { Brand, Button, Card, EmptyState, Spinner } from "./ui/primitives";
 
 const ScanPreview = lazy(() => import("./scanner/scan-preview"));
+const ScanInbox = lazy(() => import("./scanner/scan-inbox"));
 
 function AppHeader({ snapshot }: { snapshot: PairingSnapshot }) {
   return (
@@ -52,7 +53,7 @@ const pairingSteps = [
 ];
 
 export function LaptopShell() {
-  const { snapshot, reconnect } = usePairing("host");
+  const { snapshot, session, reconnect } = usePairing("host");
   const { failure, phase, sas, url } = snapshot;
   const connected = phase === "connected";
 
@@ -61,7 +62,7 @@ export function LaptopShell() {
       <AppHeader snapshot={snapshot} />
       <main className="laptop-main" data-connected={connected}>
         <div className="intro">
-          <h1>{connected ? "Phone connected" : "Connect your phone"}</h1>
+          <h1>{connected ? "Scanner" : "Connect your phone"}</h1>
           {!connected && (
             <p>
               Use your phone as a scanner, document camera, clicker, or
@@ -94,6 +95,11 @@ export function LaptopShell() {
             </>
           )}
         </Card>
+        {connected && session && (
+          <Suspense fallback={<Spinner label="Loading scanner" />}>
+            <ScanInbox session={session} />
+          </Suspense>
+        )}
         {!connected && (
           <section
             className="pairing-steps"
@@ -160,7 +166,7 @@ const modes = [
 
 export function PhoneShell({ room }: { room: string }) {
   const [mode, setMode] = useState<(typeof modes)[number]>(modes[0]);
-  const { snapshot } = usePairing("phone", room);
+  const { snapshot, session } = usePairing("phone", room);
   const { failure, phase, sas } = snapshot;
   const showScanner = phase === "connected" && mode.id === "scan";
   const Icon = mode.icon;
@@ -175,9 +181,9 @@ export function PhoneShell({ room }: { room: string }) {
             <PairingError failure={failure} />
           ) : phase === "connected" && sas ? (
             <>
-              {showScanner && (
+              {showScanner && session && (
                 <Suspense fallback={<Spinner label="Loading scanner" />}>
-                  <ScanPreview />
+                  <ScanPreview session={session} />
                 </Suspense>
               )}
               <VerificationCode sas={sas} />

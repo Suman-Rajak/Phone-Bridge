@@ -284,6 +284,9 @@
 .laptop-main[data-connected="true"] .intro {
   @apply content-center;
 }
+.laptop-main[data-connected="true"] .intro h1 {
+  @apply text-heading;
+}
 .intro h1 {
   @apply max-w-lg text-display font-semibold tracking-tighter;
 }
@@ -352,6 +355,17 @@
     grid-column: 2;
     grid-row: 1 / span 2;
   }
+  .laptop-main[data-connected="true"] {
+    @apply gap-x-8 pt-12;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.56fr);
+  }
+  .laptop-main[data-connected="true"] .intro {
+    grid-column: 1 / -1;
+  }
+  .laptop-main[data-connected="true"] .pairing-card {
+    @apply min-h-64 self-start;
+    grid-row: 2;
+  }
 }
 
 .phone-shell {
@@ -405,6 +419,18 @@
 }
 .scan-actions {
   @apply flex flex-wrap justify-center gap-2;
+}
+.scan-inbox {
+  @apply grid min-w-0 gap-4 p-6 lg:col-start-1 lg:row-start-2;
+}
+.scan-inbox h2 {
+  @apply text-xl font-semibold tracking-tight;
+}
+.scan-inbox figure {
+  @apply grid justify-items-center gap-3 text-sm text-muted;
+}
+.scan-inbox img {
+  @apply max-h-80 max-w-full rounded-control border border-line object-contain;
 }
 .mode-bar {
   @apply sticky bottom-0 mx-auto grid w-full max-w-xl grid-cols-5 gap-1 border-t border-line bg-surface px-2 pt-2;
