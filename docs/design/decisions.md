@@ -79,3 +79,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Hash the file in a dedicated worker before saving it. Retain a verified Blob until the user removes it or leaves the page. On browsers that support the native save picker, offer it from the Save file button and offer browser download if saving fails. [File picker](https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker) · [Web Crypto digest](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
 - Show rate calculated from received or queued bytes since acceptance. The browser test records verified receiver throughput for both directions separately.
 - Read each outgoing file in blocks of 64 wire chunks. Hand the receiver's chunks to its hash worker in small batches so large file reads and verification keep the interface responsive.
+
+## T14 · Text clipboard
+
+- Read the device clipboard on the Paste button’s user gesture. Keep the text box available when the browser declines clipboard access. [Clipboard permissions and activation](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
+- Write validated incoming text automatically on a focused laptop when the browser permits it. Otherwise show a Copy action. On the phone, show the received text and let the user choose Copy. Select the read-only text when the browser declines the write. [Document focus](https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus)
+- Keep the current received text in the tab and render it through a read-only text field. Use the protocol’s existing 1 MB UTF-8 limit in both directions.

@@ -299,7 +299,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test:e2e -- files`
 
 #### T14 · Text clipboard
-- Stage: Build · Effort: medium · Depends: T06 · Status: todo
+- Stage: Build · Effort: medium · Depends: T06 · Status: in-progress
 - Build: phone text box + "Paste from phone" (`navigator.clipboard.readText()` on tap) + Send; laptop writes with `navigator.clipboard.writeText()` if focused, else toast with a Copy button; laptop → phone the same way (phone shows text with a Copy button). Render as text, never HTML.
 - Done when: Hindi + emoji round-trip E2E; no-focus path shows the Copy button.
 - Verify: `pnpm test:e2e -- clipboard`

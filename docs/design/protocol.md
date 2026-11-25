@@ -89,6 +89,10 @@ After `file.accept`, the sender streams 16 KiB frames on `bulk`, pauses at 8 MiB
 
 Either peer may send `file.cancel` during a transfer. Both peers stop the active job and release its buffers. An interruption or stalled transfer also releases temporary data. The signaling Worker stays outside the file flow.
 
+### Text clipboard
+
+Either peer sends `clip.text` on `control` after the user selects Send. The existing version 1 validator allows up to 1,000,000 UTF-8 bytes. The receiving interface displays the text in a plain-text field and provides a Copy action when browser permissions or focus prevent an automatic laptop write.
+
 ## Short authentication string
 
 Normalize both SHA-256 DTLS fingerprints to lowercase 64-character hex, sort them lexicographically, concatenate them as UTF-8, and hash with SHA-256. Take the first four digest bytes as an unsigned big-endian integer, reduce modulo 10,000, and left-pad to four digits. The all-zero fingerprint and the all-`ff` fingerprint produce `8846` in either input order. This code supports human comparison. The phone independently pins the laptop fingerprint from the QR before accepting the remote description. [Web Crypto digest](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
