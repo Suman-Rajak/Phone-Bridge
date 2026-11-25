@@ -42,4 +42,8 @@ The [device test matrix](../test/device-matrix.md) is ready for the Wi-Fi and ph
 
 Added rear-camera preview and document detection on the paired phone in [PR #10](https://github.com/Suman-Rajak/Phone-Bridge/pull/10). The Chromium fixture showed four detected corners, roughly 15 fps, and zero main-thread tasks over 50 ms during startup and detection. The laptop and dark phone passed axe with no serious or critical findings. The SmartDoc benchmark remains blocked on H5. See the [session evidence](../evidence/sessions/T08.md).
 
-Next is T09, capture and send.
+## T09 · Scan capture and delivery
+
+Delivered automatic and manual capture and verified scan delivery in [PR #11](https://github.com/Suman-Rajak/Phone-Bridge/pull/11). Local verification passed with 97 unit tests and eleven browser tests. The phone and laptop reported matching JPEG dimensions and SHA-256, and a digest mismatch preserved the previous scan. See the [session evidence](../evidence/sessions/T09.md).
+
+Next is T10, page rectification, enhancement, and the scan tray.
