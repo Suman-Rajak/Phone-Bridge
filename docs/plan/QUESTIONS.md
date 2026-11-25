@@ -1,5 +1,9 @@
 # Questions
 
+## H2 and H3 — Real-device pairing (T07)
+
+Run the two pairing checks on a physical phone and laptop, then paste back the result for each network. Include the OS and browser versions, the connection time, whether the verification codes matched, and whether all three channels opened on both devices. [HTTPS setup](../ship/dev-https.md#enable-pairing-from-the-https-page) · [Device matrix](../test/device-matrix.md)
+
 ## H5 — SmartDoc sample access (T03 benchmark)
 
 Zenodo returned HTTP 403 to the download command from the development environment. The official CC BY 4.0 sample requires no registration.

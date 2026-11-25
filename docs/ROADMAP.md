@@ -253,7 +253,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test && pnpm test:e2e -- pairing`
 
 #### T07 · Real-device pairing check
-- Stage: Test · Effort: low · Depends: T06 · Human: H2, H3 · Status: todo
+- Stage: Test · Effort: low · Depends: T06 · Human: H2, H3 · Status: blocked (H2, H3)
 - Build: test steps for the human in `docs/test/device-matrix.md` (same Wi-Fi; laptop on phone hotspot); after results come back, fix failures with the bug-fix flow and record results.
 - Done when: both rows pass.
 

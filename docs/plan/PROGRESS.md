@@ -34,4 +34,8 @@ Delivered the local Wrangler Worker, typed signaling contract, and Durable Objec
 
 Delivered QR pairing, the pinned DTLS fingerprint, all three data channels, clock sync, and the connection diagnostics drawer in [PR #8](https://github.com/Suman-Rajak/Phone-Bridge/pull/8). Local verification passed with 91 unit tests and nine browser tests. Separate browser contexts connected within five seconds after QR setup. See the [session evidence](../evidence/sessions/T06.md).
 
-Next is T07, real-device pairing on Wi-Fi and a phone hotspot, with H2 and H3.
+## T07 · Real-device pairing
+
+The [device test matrix](../test/device-matrix.md) is ready for the Wi-Fi and phone-hotspot checks. T07 remains blocked on [H2 and H3 results](QUESTIONS.md#h2-and-h3--real-device-pairing-t07).
+
+Next is T08, phone preview detection.
