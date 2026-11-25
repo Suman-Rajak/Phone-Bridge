@@ -41,6 +41,7 @@ const failures: Record<PairingFailure, { title: string; description: string }> =
 
 export function usePairing(role: "host" | "phone", room?: string) {
   const [snapshot, setSnapshot] = useState(() => initialPairing(role));
+  const [session, setSession] = useState<PairingSession | null>(null);
   const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
@@ -71,18 +72,20 @@ export function usePairing(role: "host" | "phone", room?: string) {
     const fingerprint =
       new URLSearchParams(hash.slice(1)).get("fp") ?? undefined;
     let active = true;
-    let session: PairingSession | undefined;
+    let activeSession: PairingSession | undefined;
+    setSession(null);
     setSnapshot(initialPairing(role));
     void import("@phonebridge/rtc").then(
       ({ PairingSession }) => {
         if (!active) return;
-        session = new PairingSession({
+        activeSession = new PairingSession({
           role,
           signaling,
           siteOrigin: origin,
           publish: setSnapshot,
         });
-        return session.start(room, fingerprint);
+        setSession(activeSession);
+        return activeSession.start(room, fingerprint);
       },
       () => {
         if (active)
@@ -95,11 +98,15 @@ export function usePairing(role: "host" | "phone", room?: string) {
     );
     return () => {
       active = false;
-      session?.close();
+      activeSession?.close();
     };
   }, [role, room, generation]);
 
-  return { snapshot, reconnect: () => setGeneration((current) => current + 1) };
+  return {
+    snapshot,
+    session,
+    reconnect: () => setGeneration((current) => current + 1),
+  };
 }
 
 export function PairingError({

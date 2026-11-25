@@ -1,5 +1,6 @@
 import cvModule from "@techstark/opencv-js";
 import { detectDocument } from "./detect.ts";
+import { laplacianVariance } from "./sharpness.ts";
 import type { OpenCvRuntime } from "./opencv.ts";
 import type { Frame } from "./types.ts";
 import type { VisionRequest, VisionResponse } from "./worker-client.ts";
@@ -40,6 +41,8 @@ worker.onmessage = async ({ data: request }) => {
       worker.postMessage({
         id,
         detection: detectDocument(cv, frame, request.mode),
+        sharpness:
+          request.mode === "preview" ? laplacianVariance(frame) : undefined,
       });
     }
   } catch (error) {

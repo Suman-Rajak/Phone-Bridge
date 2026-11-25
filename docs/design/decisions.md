@@ -53,3 +53,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Ask for camera access when the user chooses Start camera in Scan. Run the detector on one frame at a time at up to 15 fps. Cap the preview’s longer side at 320 px and transfer resized bitmaps to the worker for pixel readback. Use a small canvas to supply RGBA data when the browser cannot transfer resized bitmaps. [Browser bitmap API](https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap)
 - Keep OpenCV in the lazily loaded worker bundle. Vite names the production worker asset by content hash, so the browser can reuse a cached copy until it changes. The progress bar advances as the camera, worker runtime, and first detection result become available.
 - Smooth normalized corners with alpha 0.4 and reset the smoother when detection switches between a page lock and fallback. The preview stops the track and terminates the worker when leaving Scan.
+
+## T09 · Scan capture and delivery
+
+- Check sharpness with the grayscale Laplacian in the vision worker and compare unsmoothed corners against the start of the 500 ms hold. Rearm automatic capture when the page moves or leaves the view. Keep the manual shutter available whenever the camera has a frame and no capture is in progress.
+- Try native still capture first and fall back to a full-resolution video frame. Encode at JPEG quality 0.92. If the still camera uses a different aspect ratio, omit preview corners because the captured pixels may have a different crop. [Image Capture](https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture) · [Worker JPEG encoding](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob)
+- Use `scanId` for the existing transfer messages and bulk framing, cap the receiver at one scan, and show the scan only after validating its JPEG dimensions and digest in a worker. [Scan transfer contract](protocol.md#scan-transfer)

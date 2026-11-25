@@ -52,6 +52,7 @@ test("scan-detect locks onto a page and releases the camera when changing tools"
     });
 
     await start.click();
+    await phone.getByRole("button", { name: "Auto capture" }).click();
     await expect(
       phone.getByText("Document detected", { exact: true }),
     ).toBeVisible({ timeout: 30_000 });

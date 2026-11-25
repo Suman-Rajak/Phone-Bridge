@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, Flashlight } from "lucide-react";
+import type { PairingSession } from "@phonebridge/rtc";
 import type { Detection } from "@phonebridge/vision";
 import { createVisionWorker } from "@phonebridge/vision/worker";
 import type { VisionRequest, VisionResponse } from "@phonebridge/vision/worker";
 import { Button, EmptyState, ErrorState, ProgressBar } from "../ui/primitives";
 import { overlayDetection, previewSize } from "./preview-geometry";
+import { useScanCapture } from "./use-scan-capture";
 
 type TorchCapabilities = MediaTrackCapabilities & {
   torch?: boolean | boolean[];
@@ -37,7 +39,7 @@ function cameraError(error: unknown): string {
   return "Close other apps using the camera and try again.";
 }
 
-export default function ScanPreview() {
+export default function ScanPreview({ session }: { session: PairingSession }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const trackRef = useRef<MediaStreamTrack>(null);
   const [running, setRunning] = useState(false);
@@ -49,11 +51,14 @@ export default function ScanPreview() {
   const [torchBusy, setTorchBusy] = useState(false);
   const [torchError, setTorchError] = useState("");
   const [fps, setFps] = useState(0);
+  const { capture, observe, stopCapture, auto, toggleAuto, stage, resetStage } =
+    useScanCapture(session, videoRef, trackRef);
   const debug =
     typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("debug") === "1";
 
   function start() {
+    resetStage();
     setFailure("");
     setProgress(10);
     setDetection(null);
@@ -86,6 +91,7 @@ export default function ScanPreview() {
       if (disposed) return;
       disposed = true;
       clearInterval(timer);
+      stopCapture();
       worker?.terminate();
       stream?.getTracks().forEach((track) => {
         track.onended = null;
@@ -249,6 +255,7 @@ export default function ScanPreview() {
         const size = request;
         request = undefined;
         const next = data.detection;
+        observe(next, data.sharpness ?? 0, size);
         setDetection((previous) =>
           next ? overlayDetection(previous, next, size) : null,
         );
@@ -271,7 +278,7 @@ export default function ScanPreview() {
       fail("The camera preview couldn’t start. Try again."),
     );
     return stop;
-  }, [debug, running]);
+  }, [debug, observe, running, stopCapture]);
 
   async function toggleTorch() {
     const track = trackRef.current;
@@ -360,6 +367,19 @@ export default function ScanPreview() {
         </p>
       )}
       <div className="scan-actions">
+        <Button
+          disabled={progress < 40 || stage === "taking" || stage === "sending"}
+          onClick={() => void capture()}
+        >
+          <Camera aria-hidden="true" /> Capture page
+        </Button>
+        <Button
+          variant={auto ? "secondary" : "ghost"}
+          aria-pressed={auto}
+          onClick={toggleAuto}
+        >
+          Auto capture
+        </Button>
         {torchAvailable && (
           <Button
             variant="secondary"
@@ -374,6 +394,22 @@ export default function ScanPreview() {
           Stop camera
         </Button>
       </div>
+      {stage === "failed" ? (
+        <ErrorState
+          title="Scan couldn’t be sent"
+          description="Keep both devices connected and capture the page again."
+        />
+      ) : (
+        stage !== "idle" && (
+          <p role="status" className="muted">
+            {stage === "taking"
+              ? "Taking photo…"
+              : stage === "sending"
+                ? "Sending to laptop…"
+                : "Scan sent to laptop"}
+          </p>
+        )
+      )}
       {torchError && <p role="alert">{torchError}</p>}
     </section>
   );

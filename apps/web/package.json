@@ -7,6 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@phonebridge/protocol": "workspace:*",
     "@phonebridge/rtc": "workspace:*",
     "@phonebridge/vision": "workspace:*",
     "qrcode": "1.5.4",

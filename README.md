@@ -19,6 +19,8 @@ For a local pairing check on one machine, open the pairing link in a second brow
 
 On a paired phone, choose **Scan** and **Start camera**. A green outline marks a detected page. An amber outline means the detector is estimating the boundary. Leave Scan or choose **Stop camera** to release the camera.
 
+Hold a sharp page steady to capture it automatically, or tap **Capture page**. The laptop shows the received scan after verifying it. Toggle **Auto capture** off to take scans only with the shutter.
+
 Run the checks before opening a pull request.
 
 ```sh
