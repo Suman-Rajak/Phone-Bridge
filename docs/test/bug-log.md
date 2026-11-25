@@ -31,3 +31,10 @@
 - Cause — ESLint and Prettier traversed Wrangler’s local build output.
 - Fix — Exclude Wrangler’s generated directories from source checks.
 - PR — [#8](https://github.com/Suman-Rajak/Phone-Bridge/pull/8).
+
+## T11 · Tray assertion timed out during a corner edit
+
+- Symptom — The full suite timed out after five seconds with the previous image still visible after Save corners.
+- Reproduction — Run all Chromium tests with four Playwright workers while the source checks are also running. Inspect the retained tray trace.
+- Cause — The trace shows Straightening page after the drawer closed. The browser test exhausted its five-second assertion while the worker was processing the new image.
+- Fix — Give the corner-edit assertion the same 30-second window as the other worker-dependent steps and continue requiring a new image.

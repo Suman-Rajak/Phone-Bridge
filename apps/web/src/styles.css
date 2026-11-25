@@ -430,6 +430,24 @@
 .scan-inbox h2 {
   @apply text-xl font-semibold tracking-tight;
 }
+.scan-inbox-header {
+  @apply flex flex-wrap items-center justify-between gap-3;
+}
+.pdf-target-form {
+  @apply flex flex-wrap items-end gap-3;
+}
+.pdf-target-form label {
+  @apply grid min-w-0 flex-1 gap-2 text-sm font-medium;
+}
+.pdf-target-form input {
+  @apply min-h-touch w-full rounded-control border border-line bg-surface px-3 text-ink;
+}
+.pdf-result {
+  @apply flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4;
+}
+.pdf-result output {
+  @apply font-semibold tabular-nums;
+}
 .scan-inbox figure {
   @apply grid justify-items-center gap-3 text-sm text-muted;
 }

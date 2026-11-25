@@ -5,7 +5,8 @@ import {
   ScanLine,
   Trash2,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
+import type { PdfPage } from "@phonebridge/pdf/worker";
 import type { PairingSession } from "@phonebridge/rtc";
 import type { PageMode, PageRotation } from "@phonebridge/vision/rectify";
 import {
@@ -20,6 +21,8 @@ import { CornerEditor } from "./corner-editor";
 import { useBlobUrl } from "./use-blob-url";
 import { useScanPages } from "./use-scan-pages";
 import type { ScanPage } from "./use-scan-pages";
+
+const PdfExportDrawer = lazy(() => import("./pdf-export-drawer"));
 
 const modes: { value: PageMode; label: string }[] = [
   { value: "original", label: "Original" },
@@ -70,8 +73,12 @@ export default function ScanInbox({
     removePage,
   } = useScanPages(session);
   const [editingId, setEditingId] = useState("");
+  const [exportPages, setExportPages] = useState<PdfPage[] | null>(null);
   const drag = useRef<string | null>(null);
   const index = selected ? pages.indexOf(selected) : -1;
+  const readyPages = pages.flatMap((page) =>
+    page.stage === "ready" && page.result ? [page.result] : [],
+  );
   const preview = useBlobUrl(
     selected?.result?.jpeg ??
       (selected?.stage === "failed" ? selected.request.jpeg : undefined),
@@ -79,7 +86,25 @@ export default function ScanInbox({
 
   return (
     <Card className="scan-inbox">
-      <h2>Pages</h2>
+      <div className="scan-inbox-header">
+        <h2>Pages</h2>
+        {pages.length > 0 && (
+          <Button
+            disabled={readyPages.length !== pages.length}
+            onClick={() => setExportPages(readyPages)}
+          >
+            Export PDF
+          </Button>
+        )}
+      </div>
+      {exportPages && (
+        <Suspense fallback={<Spinner label="Opening PDF export" />}>
+          <PdfExportDrawer
+            pages={exportPages}
+            onClose={() => setExportPages(null)}
+          />
+        </Suspense>
+      )}
       {transferFailed && (
         <ErrorState
           title="Scan couldn’t be received"
