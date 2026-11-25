@@ -8,4 +8,6 @@ The workspace uses Node.js 24 and pnpm 11.25.0. See the [session evidence](../ev
 
 ## T01D · Design system and app shell
 
-Implemented on `t01d-design-system`. The design system provides responsive, system-themed laptop and phone shells and a development-only component gallery. See the [UI specification](../design/ui.md) and [session evidence](../evidence/sessions/T01D.md). Next is T02, capability diagnostics and the HTTPS development guide.
+Delivered in [PR #2](https://github.com/Suman-Rajak/Phone-Bridge/pull/2). Two Vitest and three Chromium tests passed, with zero serious or critical axe violations. The phone mode bar fits at 360 px, and the gallery is excluded from production assets. See the [UI specification](../design/ui.md) and [session evidence](../evidence/sessions/T01D.md).
+
+Next is T02, capability diagnostics and the HTTPS development guide.

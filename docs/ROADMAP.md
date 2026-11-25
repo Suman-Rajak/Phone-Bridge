@@ -176,7 +176,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm install && pnpm lint && pnpm typecheck && pnpm test`
 
 #### T01D · Design system and app shell
-- Stage: Build · Effort: medium · Depends: T01 · Status: in-progress
+- Stage: Build · Effort: medium · Depends: T01 · Status: done (PR #2)
 - Build: `docs/design/ui.md` defining the visual language (colour tokens for light and dark, type scale, spacing scale, radii, shadows, motion durations, icon style with `lucide-react`) and a short description of each main screen; implement tokens as Tailwind v4 theme variables; components in `apps/web/src/ui/`: Button (primary, secondary, ghost, sizes), Card, Sheet/Drawer, Modal, Toast, Progress bar, Spinner/Skeleton, Tabs, Segmented control, Status pill, Empty state, Error state; app shells for laptop (`/`) and phone (`/p/:token`, with bottom mode bar); a dev-only `/ui` gallery route showing every component in light and dark (excluded from production builds).
 - Done when: the gallery renders every component in both themes; axe checks pass on the gallery; screenshots at both viewports are attached to the PR and look consistent.
 - Verify: `pnpm test && pnpm test:e2e -- ui-gallery`
