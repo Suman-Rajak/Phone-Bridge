@@ -1,7 +1,11 @@
 import type { Detection, DetectionMode, Frame } from "./types.ts";
 
-export type VisionRequest = { id: number; frame: Frame; mode: DetectionMode };
+export type VisionRequest =
+  | { id: number; initialize: true }
+  | { id: number; frame: Frame; mode: DetectionMode }
+  | { id: number; bitmap: ImageBitmap; mode: DetectionMode };
 export type VisionResponse =
+  | { id: number; ready: true; acceptsBitmap: boolean }
   | { id: number; detection: Detection | null }
   | { id: number; error: { code: "vision_failed"; message: string } };
 

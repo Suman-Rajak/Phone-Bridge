@@ -51,6 +51,9 @@ importers:
       '@phonebridge/rtc':
         specifier: workspace:*
         version: link:../../packages/rtc
+      '@phonebridge/vision':
+        specifier: workspace:*
+        version: link:../../packages/vision
       lucide-react:
         specifier: 1.80.0
         version: 1.80.0(@types/react@19.3.2)(react@19.3.1)

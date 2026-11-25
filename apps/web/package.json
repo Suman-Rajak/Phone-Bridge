@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@phonebridge/rtc": "workspace:*",
+    "@phonebridge/vision": "workspace:*",
     "qrcode": "1.5.4",
     "lucide-react": "1.80.0",
     "react": "19.3.1",

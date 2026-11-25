@@ -22,6 +22,7 @@ Use the shared React components in `apps/web/src/ui/` and the Tailwind theme in 
 - Keep control hit targets at least 44 × 44 px. Use Lucide stroke icons with text or an accessible name. Mark redundant icons as decorative.
 - Use 180 ms for transitions. Remove decorative transitions and spinner rotation when reduced motion is requested.
 - Use labelled controls, visible focus, and WCAG AA contrast. Announce success and progress with status text. Explain what happened and give a next step after an error or permission denial.
+- Camera overlays use shared green and amber tokens in both themes. Use a solid green outline for a page lock and a dashed amber outline for an estimated boundary. Pair each outline with written status.
 
 ## Shared components
 

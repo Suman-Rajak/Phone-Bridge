@@ -19,6 +19,8 @@
 }
 
 @theme {
+  --color-camera-locked: #4ade80;
+  --color-camera-fallback: #fbbf24;
   --radius-control: 0.75rem;
   --radius-panel: 1.5rem;
   --spacing-touch: 2.75rem;
@@ -366,6 +368,43 @@
 }
 .phone-workspace .empty-state {
   @apply justify-items-center;
+}
+.scan-workspace {
+  @apply grid gap-5 p-4 text-center;
+}
+.scan-workspace .empty-state {
+  @apply justify-items-center;
+}
+.scan-workspace .verification-code {
+  @apply gap-2 border-t border-line pt-4;
+}
+.scan-workspace .verification-code > .icon-tile {
+  @apply hidden;
+}
+.scan-preview {
+  @apply grid min-w-0 gap-3;
+}
+.scan-feed {
+  @apply relative isolate overflow-hidden rounded-control bg-black;
+}
+.scan-feed video {
+  @apply block h-auto w-full;
+}
+.scan-outline {
+  @apply pointer-events-none absolute inset-0 size-full stroke-camera-locked;
+  fill: none;
+  stroke-width: 3px;
+  filter: drop-shadow(0 1px 1px #000);
+}
+.scan-outline[data-detection="fallback"] {
+  @apply stroke-camera-fallback;
+  stroke-dasharray: 8px 5px;
+}
+.scan-fps {
+  @apply absolute right-2 top-2 rounded-control bg-black/75 px-2 py-1 text-xs text-white tabular-nums;
+}
+.scan-actions {
+  @apply flex flex-wrap justify-center gap-2;
 }
 .mode-bar {
   @apply sticky bottom-0 mx-auto grid w-full max-w-xl grid-cols-5 gap-1 border-t border-line bg-surface px-2 pt-2;
