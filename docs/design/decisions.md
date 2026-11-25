@@ -16,3 +16,9 @@ Followed the official [Tailwind Vite installation guide](https://tailwindcss.com
 - Load the gallery through Vite’s development flag. Playwright tests both themes, the overlays, keyboard interaction, and the phone shell at 360 px.
 
 See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcss.com/docs/theme), [Vite environment flags](https://vite.dev/guide/env-and-mode), and [Playwright accessibility testing](https://playwright.dev/docs/accessibility-testing).
+
+## T02 · Browser diagnostics and local HTTPS
+
+- Separate browser feature checks from React and test them with supplied browser globals. Check API availability without invoking protected APIs. WebGL2 is the exception because context creation can fail even when the interface exists.
+- Display secure-context failures separately from missing APIs. Use separate rows for clipboard read and write because support can differ.
+- Keep Vite’s default HTTP development startup. Enable HTTPS when both certificate paths are provided and use Vite’s exact hostname allowlist when running behind a tunnel. [Vite server options](https://vite.dev/config/server-options)

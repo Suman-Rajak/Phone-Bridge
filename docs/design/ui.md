@@ -39,6 +39,7 @@ Use Button for actions, Card for grouped content, and Status pill for short conn
 | Drawing tablet      | Full-width drawing surface on the phone. A whiteboard or slide with the ink overlay on the laptop.                                                       |
 | Clipboard and files | Text and file actions near the incoming items. Use progress and cancel controls for transfers.                                                           |
 | Advanced            | A drawer opened from connection status. Connection details and a copy action stay in the drawer.                                                         |
+| Browser diagnostics | A capability table with display-only status pills. Show HTTPS guidance above the table and alternatives alongside unavailable features.                  |
 | Component gallery   | A development-only view of the shared components, with a system, light, and dark theme selector.                                                         |
 
 Review laptop and phone screenshots at 1440 × 900 and 390 × 844 before opening a UI PR. Also test the phone layout at 360 px without horizontal scrolling. Run axe on the relevant screens and overlays.
