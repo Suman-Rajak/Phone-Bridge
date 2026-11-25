@@ -25,6 +25,8 @@ pnpm test:e2e
 
 In development, open `/ui` to preview the shared components in light and dark themes.
 
+Open `/diagnostics` to check browser features. To reach the dev server from a phone, use the [HTTPS development guide](docs/ship/dev-https.md).
+
 Build the web app with `pnpm --filter @phonebridge/web build`. Run `pnpm evidence` to print Codex trailers from the local Git history.
 
 See the [roadmap](docs/ROADMAP.md) for feature milestones.
