@@ -299,13 +299,13 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test:e2e -- files`
 
 #### T14 · Text clipboard
-- Stage: Build · Effort: medium · Depends: T06 · Status: todo
+- Stage: Build · Effort: medium · Depends: T06 · Status: done (PR #15)
 - Build: phone text box + "Paste from phone" (`navigator.clipboard.readText()` on tap) + Send; laptop writes with `navigator.clipboard.writeText()` if focused, else toast with a Copy button; laptop → phone the same way (phone shows text with a Copy button). Render as text, never HTML.
 - Done when: Hindi + emoji round-trip E2E; no-focus path shows the Copy button.
 - Verify: `pnpm test:e2e -- clipboard`
 
 #### T15 · Security review 1
-- Stage: Review · Effort: xhigh · Depends: T06, T13, T14 · Human: H6 for `@codex review` · Status: todo
+- Stage: Review · Effort: xhigh · Depends: T06, T13, T14 · Human: H6 for `@codex review` · Status: blocked (H6)
 - Build: review pairing, fingerprint check, schema validation, file names, rendering of received text, permission prompts; write `docs/review/security-review.md`; fix findings in separate PRs. Do not auto-merge this PR.
 - Done when: every finding is fixed or accepted with a written reason.
 

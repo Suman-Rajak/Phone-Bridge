@@ -27,6 +27,8 @@ Choose **Export PDF** on the laptop and enter a target size in KB. Select **Crea
 
 Use **Files** on the laptop or open **Clipboard** on the phone to send documents in either direction. The receiving device confirms files larger than 50 MB. Once a file passes verification, select **Save file** or **Download file**.
 
+Use **Text clipboard** to paste or type a message and select **Send**. When the browser allows it, a focused laptop copies received text automatically. Use **Copy** on the phone or when the laptop shows the received-text notification.
+
 Run the checks before opening a pull request.
 
 ```sh

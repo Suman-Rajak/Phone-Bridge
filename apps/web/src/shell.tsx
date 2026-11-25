@@ -24,6 +24,7 @@ import { Brand, Button, Card, EmptyState, Spinner } from "./ui/primitives";
 const ScanPreview = lazy(() => import("./scanner/scan-preview"));
 const ScanInbox = lazy(() => import("./scanner/scan-inbox"));
 const FilePanel = lazy(() => import("./files/file-panel"));
+const ClipboardPanel = lazy(() => import("./clipboard/clipboard-panel"));
 
 function AppHeader({ snapshot }: { snapshot: PairingSnapshot }) {
   return (
@@ -102,6 +103,14 @@ export function LaptopShell() {
               </>
             )}
           </Card>
+          {(connected || hasTray) && (
+            <Suspense fallback={<Spinner label="Loading clipboard" />}>
+              <ClipboardPanel
+                session={connected ? session : null}
+                role="host"
+              />
+            </Suspense>
+          )}
           {(connected || hasTray) && (
             <Suspense fallback={<Spinner label="Loading files" />}>
               <FilePanel session={connected ? session : null} allowDrop />
@@ -205,6 +214,22 @@ export function PhoneShell({ room }: { room: string }) {
       <AppHeader snapshot={snapshot} />
       <main className="phone-main">
         <h1>{mode.title}</h1>
+        {session && (
+          <Suspense
+            fallback={
+              mode.id === "clipboard" ? (
+                <Spinner label="Loading clipboard" />
+              ) : null
+            }
+          >
+            <ClipboardPanel
+              session={phase === "connected" ? session : null}
+              role="phone"
+              visible={mode.id === "clipboard"}
+              showClipboard={() => setMode(modes[4])}
+            />
+          </Suspense>
+        )}
         {session && (
           <Suspense
             fallback={

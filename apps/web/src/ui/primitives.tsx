@@ -125,15 +125,18 @@ export function ErrorState({
 
 export function Toast({
   children,
+  action,
   onDismiss,
 }: {
   children: ReactNode;
+  action?: ReactNode;
   onDismiss: () => void;
 }) {
   return (
-    <div className="toast">
+    <div className="toast" data-action={Boolean(action)}>
       <Check aria-hidden="true" />
       <p role="status">{children}</p>
+      {action}
       <Button
         variant="ghost"
         size="small"

@@ -37,7 +37,8 @@ export type TransferMessage = Extract<
       | "file.accept"
       | "file.reject"
       | "file.done"
-      | "file.cancel";
+      | "file.cancel"
+      | "clip.text";
   }
 >;
 
@@ -550,6 +551,7 @@ export class PairingSession {
       case "file.reject":
       case "file.done":
       case "file.cancel":
+      case "clip.text":
         for (const observer of this.transferObservers)
           observer.control?.(message);
         return;

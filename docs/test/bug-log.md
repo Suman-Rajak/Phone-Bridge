@@ -40,6 +40,14 @@
 - Fix — Give the corner-edit assertion the same 30-second window as the other worker-dependent steps and continue requiring a new image.
 - PR — [#13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13).
 
+## T14 · Scan capture readiness timed out in CI
+
+- Symptom — The scan-capture browser test timed out on the empty tray before the camera started.
+- Reproduction — Run the full Playwright suite with a fresh Vite cache on the [hosted Chromium runner](https://github.com/Suman-Rajak/Phone-Bridge/actions/runs/45680461602/job/139439327036).
+- Cause — The empty tray appears after both WebRTC pairing and loading the scanner panel. The assertion gave this combined step five seconds.
+- Fix — Wait up to 15 seconds for the same tray readiness signal, matching the scanner detection test’s startup window.
+- PR — [#15](https://github.com/Suman-Rajak/Phone-Bridge/pull/15).
+
 ## T11 · Tray briefly showed the deleted page
 
 - Symptom — Hosted Chromium read the deleted page’s old preview before the remaining page became visible.

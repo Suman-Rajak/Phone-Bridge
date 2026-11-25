@@ -64,7 +64,9 @@ test("scan-capture delivers automatic and manual scans and rejects a mismatched 
     });
     const phone = await context.newPage();
     await phone.goto(url);
-    await expect(laptop.getByText("Waiting for a scan")).toBeVisible();
+    await expect(laptop.getByText("Waiting for a scan")).toBeVisible({
+      timeout: 15_000,
+    });
     await phone.getByRole("button", { name: "Start camera" }).click();
     const received = laptop.getByRole("img", { name: "Scanned document" });
     await expect(received).toBeVisible({ timeout: 30_000 });
