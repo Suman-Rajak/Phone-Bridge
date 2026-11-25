@@ -8,7 +8,7 @@ Camera, motion, and clipboard APIs require a secure context. A laptop browser ca
 2. In one terminal, start Vite.
 
    ```sh
-   pnpm dev --host 127.0.0.1 --port 5173 --strictPort
+   pnpm dev:web --host 127.0.0.1 --port 5173 --strictPort
    ```
 
 3. In a second terminal, start the tunnel and copy the hostname it prints, such as example-name.trycloudflare.com.
@@ -23,13 +23,13 @@ Camera, motion, and clipboard APIs require a secure context. A laptop browser ca
 
    ```powershell
    $env:__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS = 'example-name.trycloudflare.com'
-   pnpm dev --host 127.0.0.1 --port 5173 --strictPort
+   pnpm dev:web --host 127.0.0.1 --port 5173 --strictPort
    ```
 
    Bash or Zsh
 
    ```sh
-   __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=example-name.trycloudflare.com pnpm dev --host 127.0.0.1 --port 5173 --strictPort
+   __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=example-name.trycloudflare.com pnpm dev:web --host 127.0.0.1 --port 5173 --strictPort
    ```
 
 5. Open https://example-name.trycloudflare.com/diagnostics on the phone. The header should read **Secure page**. Replace the hostname in both places each time the tunnel assigns a new one.
@@ -50,7 +50,7 @@ Anyone with an unprotected Quick Tunnel URL can reach the running dev server. St
    mkcert -key-file .certs/lan-key.pem -cert-file .certs/lan.pem $phonebridgeLanIp localhost 127.0.0.1
    $env:PHONEBRIDGE_DEV_TLS_KEY = (Resolve-Path .certs/lan-key.pem).Path
    $env:PHONEBRIDGE_DEV_TLS_CERT = (Resolve-Path .certs/lan.pem).Path
-   pnpm dev --host $phonebridgeLanIp --port 5173 --strictPort
+   pnpm dev:web --host $phonebridgeLanIp --port 5173 --strictPort
    ```
 
    Bash or Zsh
@@ -61,7 +61,7 @@ Anyone with an unprotected Quick Tunnel URL can reach the running dev server. St
    mkcert -install
    mkcert -key-file .certs/lan-key.pem -cert-file .certs/lan.pem "$phonebridge_lan_ip" localhost 127.0.0.1
    PHONEBRIDGE_DEV_TLS_KEY="$PWD/.certs/lan-key.pem" PHONEBRIDGE_DEV_TLS_CERT="$PWD/.certs/lan.pem" \
-     pnpm dev --host "$phonebridge_lan_ip" --port 5173 --strictPort
+     pnpm dev:web --host "$phonebridge_lan_ip" --port 5173 --strictPort
    ```
 
 3. Run mkcert -CAROOT to find the local certificate authority directory. Transfer only rootCA.pem from that directory to your own test phone. Keep the certificate authority private key and the server private key on the laptop. [mkcert mobile setup](https://github.com/FiloSottile/mkcert#mobile-devices)

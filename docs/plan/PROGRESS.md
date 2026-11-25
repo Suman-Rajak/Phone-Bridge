@@ -26,4 +26,8 @@ Delivered the product requirements, architecture, threat model, and versioned pr
 
 Authored and discovered all three repository skills in [PR #6](https://github.com/Suman-Rajak/Phone-Bridge/pull/6). The protocol and bug-fix workflows passed isolated exercises. The live vision benchmark exercise is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T04S.md).
 
-Next is T05, signaling Worker.
+## T05 · Signaling Worker
+
+Delivered the local Wrangler Worker, typed signaling contract, and Durable Object rooms in [PR #7](https://github.com/Suman-Rajak/Phone-Bridge/pull/7). Verified real loopback WebSocket relay and cleanup. Local Wrangler required no Cloudflare login. See the [session evidence](../evidence/sessions/T05.md).
+
+Next is T06, pairing, channels, clock sync, and connection diagnostics.

@@ -34,3 +34,10 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Use strict, flat versioned JSON objects. Validate expected sender and channel at the receive boundary.
 - Use UTF-8 byte length for clipboard limits and explicit UUID byte ordering for binary frames.
 - Canonicalize both fingerprints before sorting and hashing so the four-digit comparison code is stable across formatting and peer order. [Wire protocol](protocol.md)
+
+## T05 · Signaling
+
+- Validate signaling separately from the peer data channel. Use the same schemas for client and Worker parsing. [Wire protocol](protocol.md#signaling)
+- Persist only the deadline or paired marker and each socket’s role. The local room logic accepts injected sockets and time so expiry and relay rules can be verified without waiting for alarms.
+- Accept browser requests from explicit configured origins. The room token still controls access to the specific room.
+- Allow the exact locked esbuild and workerd binary setup hooks needed by Wrangler. [pnpm build settings](https://pnpm.io/settings/build#allowbuilds)

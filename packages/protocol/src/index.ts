@@ -21,3 +21,17 @@ export {
 } from "./bulk.ts";
 export type { BulkChunk } from "./bulk.ts";
 export { deriveSas, normalizeFingerprint } from "./sas.ts";
+export {
+  decodeSignalClient,
+  decodeSignalServer,
+  roomTokenSchema,
+  signalClientSchema,
+  signalRoleSchema,
+  signalServerSchema,
+} from "./signaling.ts";
+export type {
+  SignalClientMessage,
+  SignalErrorCode,
+  SignalRole,
+  SignalServerMessage,
+} from "./signaling.ts";

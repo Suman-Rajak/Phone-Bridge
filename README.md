@@ -13,6 +13,8 @@ pnpm dev
 
 Open the local URL printed by Vite, usually `http://localhost:5173`.
 
+`pnpm dev` also starts the local signaling Worker at `http://127.0.0.1:8787`. Run `pnpm dev:web` or `pnpm dev:signal` to start either service independently.
+
 Run the checks before opening a pull request.
 
 ```sh

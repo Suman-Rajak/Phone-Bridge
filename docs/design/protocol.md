@@ -8,7 +8,22 @@ The peers exchange JSON over `control` and `rt`, and binary frames over `bulk`. 
 | `bulk`    | Reliable, ordered binary chunks.                                         |
 | `rt`      | Unordered and unreliable with `maxRetransmits: 0`. Only pointer samples. |
 
-## JSON envelope
+## Signaling
+
+`POST /rooms` creates a room and returns `201` with `{ "room": "<token>" }`. The Worker encodes 16 cryptographically random bytes as 22 unpadded base64url characters. `GET /rooms/:token` upgrades an existing room connection to WebSocket. Browser origins must match the Worker’s comma-separated `ALLOWED_ORIGINS`. Local development allows the Vite loopback origins on port 5173.
+
+| Type          | Direction                     | Payload                                                                                                                                                                           |
+| ------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `join`        | Client → Worker               | `role` is `host` or `phone`. `room` is the token for that WebSocket.                                                                                                              |
+| `peer-joined` | Worker → Both                 | Both roles have joined.                                                                                                                                                           |
+| `sdp`         | Between joined peers          | `description` contains an `offer` or `answer` type and an SDP string.                                                                                                             |
+| `ice`         | Between joined peers          | `candidate` is an ICE candidate JSON object or `null` for end-of-candidates. The candidate object has `candidate` and optional `sdpMid`, `sdpMLineIndex`, and `usernameFragment`. |
+| `peer-left`   | Worker → Remaining connection | A joined peer left and the room is closing.                                                                                                                                       |
+| `error`       | Worker → Client               | `code` is `room_full`, `room_missing`, `room_expired`, `invalid_message`, `join_required`, or `peer_missing`.                                                                     |
+
+Signaling uses strict JSON objects without the data channel envelope. The Worker forwards SDP and ICE only after both roles join. A second phone receives `room_full`. An unpaired room expires after 10 minutes. Departing members close the room and clear its stored metadata. The Worker bounds signaling text frames at 128 Ki UTF-16 code units, SDP at 64 Ki code units, and the candidate string at 4 Ki code units. The Worker does not log or persist SDP, ICE, or message payloads.
+
+## Data channel JSON envelope
 
 Each message is a flat object with `v: 1`, `id` as a UUID, `t` as the sender timestamp in milliseconds, and a `type` discriminator. Payload fields sit beside the envelope fields. Unknown fields and unknown types are invalid. Timestamps are finite and nonnegative. A receiver supplies the actual channel and known peer role when validating a frame.
 
