@@ -22,3 +22,9 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Separate browser feature checks from React and test them with supplied browser globals. Check API availability without invoking protected APIs. WebGL2 is the exception because context creation can fail even when the interface exists.
 - Display secure-context failures separately from missing APIs. Use separate rows for clipboard read and write because support can differ.
 - Keep Vite’s default HTTP development startup. Enable HTTPS when both certificate paths are provided and use Vite’s exact hostname allowlist when running behind a tunnel. [Vite server options](https://vite.dev/config/server-options)
+
+## T03 · Vision research and detector
+
+- Pin the same OpenCV.js build in Node and the browser. Keep browser detection in a dedicated worker so scanner integration can load it independently of the main application. [ADR 0002](adr/0002-opencv-js.md)
+- Return source-image pixels. The preview resize rounds dimensions independently, so convert each axis back with its own scale.
+- Sample three positions per annotated SmartDoc sequence and count misses as zero. Preserve any existing baseline to keep follow-up benchmark runs reproducible. [SmartDoc setup](../understand/datasets.md)

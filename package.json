@@ -12,6 +12,8 @@
     "typecheck": "tsc --project tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "data:smartdoc": "node scripts/download-smartdoc.ts",
+    "bench:vision": "node bench/vision/run.ts",
     "evidence": "node scripts/evidence.ts"
   },
   "devDependencies": {

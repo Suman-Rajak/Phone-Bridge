@@ -188,7 +188,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test && pnpm test:e2e -- diagnostics`
 
 #### T03 · Vision research, OpenCV packaging, detection, baseline
-- Stage: Understand · Effort: high · Depends: T01 · Human: H5 for the dataset · Status: todo
+- Stage: Understand · Effort: high · Depends: T01 · Human: H5 for the dataset · Status: in-progress
 - Build:
   - ADR-0002: OpenCV.js packaging (official build vendored in `packages/vision/vendor/`, or `@techstark/opencv-js`). Load it in a Web Worker (browser) and in Node (tests).
   - `packages/vision` document detection, exactly:
@@ -202,6 +202,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
   - `scripts/download-smartdoc.ts` (SmartDoc 2015 Challenge 1; never commit the dataset; record its licence in `docs/understand/datasets.md`) and `bench/vision` computing polygon IoU against ground truth.
   - `docs/understand/document-detection.md` explaining the method.
 - Done when: synthetic tests recover corners within 2 px at 1000 px; if the dataset is available, `pnpm bench:vision` prints mean IoU and writes `bench/baseline.json`. If not, set only the benchmark part `blocked (H5)` and finish the rest.
+- Benchmark: blocked (H5), pending access to the official sample archive.
 - Verify: `pnpm test -- vision && pnpm bench:vision`
 
 #### T04 · Plan, design docs, protocol package
