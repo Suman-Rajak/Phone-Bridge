@@ -24,6 +24,6 @@ Delivered the product requirements, architecture, threat model, and versioned pr
 
 ## T04S · Repository skills
 
-Authored and discovered all three repository skills. The protocol and bug-fix workflows passed isolated exercises. The live vision benchmark exercise is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T04S.md).
+Authored and discovered all three repository skills in [PR #6](https://github.com/Suman-Rajak/Phone-Bridge/pull/6). The protocol and bug-fix workflows passed isolated exercises. The live vision benchmark exercise is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T04S.md).
 
 Next is T05, signaling Worker.
