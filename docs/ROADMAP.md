@@ -188,7 +188,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test && pnpm test:e2e -- diagnostics`
 
 #### T03 · Vision research, OpenCV packaging, detection, baseline
-- Stage: Understand · Effort: high · Depends: T01 · Human: H5 for the dataset · Status: in-progress
+- Stage: Understand · Effort: high · Depends: T01 · Human: H5 for the dataset · Status: done (PR #4)
 - Build:
   - ADR-0002: OpenCV.js packaging (official build vendored in `packages/vision/vendor/`, or `@techstark/opencv-js`). Load it in a Web Worker (browser) and in Node (tests).
   - `packages/vision` document detection, exactly:

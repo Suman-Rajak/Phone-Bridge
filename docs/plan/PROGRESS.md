@@ -16,6 +16,6 @@ Delivered in [PR #3](https://github.com/Suman-Rajak/Phone-Bridge/pull/3). The di
 
 ## T03 · Vision research and document detection
 
-Implemented the OpenCV package, worker, detector, and SmartDoc benchmark runner. The SmartDoc baseline is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T03.md).
+Delivered the OpenCV package, worker, detector, and SmartDoc benchmark runner in [PR #4](https://github.com/Suman-Rajak/Phone-Bridge/pull/4). Maximum refine corner error was 1.452 px across six synthetic pages. The SmartDoc baseline is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T03.md).
 
 Next is T04, plan, design docs, and protocol package.
