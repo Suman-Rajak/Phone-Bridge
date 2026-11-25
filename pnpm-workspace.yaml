@@ -4,3 +4,5 @@ packages:
 minimumReleaseAgeExclude:
   - "@types/node@24.19.3"
   - "@types/react@19.3.2"
+  - "@axe-core/playwright@4.14.1"
+  - lucide-react@1.80.0

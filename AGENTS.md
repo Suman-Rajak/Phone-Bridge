@@ -66,6 +66,8 @@ Recommendation: <option and why>
 Answer: <left empty for the human>
 ```
 
+**Manual push requests:** when the human simply asks you to push (outside the task loop), run `git push` for the current branch only. Do not create a pull request, branch or merge unless asked. Task work in the loop still uses a PR per task and merges it yourself.
+
 **When you stop,** report: tasks finished (with PR links), the next task, and exactly what you need from the human.
 
 ## Challenge requirements (what the judges check)
@@ -118,7 +120,7 @@ Native apps, browser extensions or desktop helpers; controlling other desktop ap
 - QR generation: `qrcode`
 - Tests: Vitest (unit), Playwright (E2E, Chromium primary)
 
-**Allowed dependencies:** `react`, `react-dom`, `vite`, `@vitejs/plugin-react`, `typescript`, `tailwindcss`, `@tailwindcss/vite`, `zod`, `qrcode`, `pdf-lib`, `pdfjs-dist`, OpenCV.js (per ADR-0002), `vitest`, `@playwright/test`, `wrangler`, `eslint`, `prettier`, and their official type packages. Stretch only, after an ADR: `tesseract.js`, `ml-levenberg-marquardt`.
+**Allowed dependencies:** `react`, `react-dom`, `vite`, `@vitejs/plugin-react`, `typescript`, `tailwindcss`, `@tailwindcss/vite`, `zod`, `qrcode`, `pdf-lib`, `pdfjs-dist`, OpenCV.js (per ADR-0002), `vitest`, `@playwright/test`, `wrangler`, `eslint`, `prettier`, `lucide-react` (icons), `@axe-core/playwright` (accessibility tests), and their official type packages. Stretch only, after an ADR: `tesseract.js`, `ml-levenberg-marquardt`.
 
 ## Repo layout
 
@@ -149,10 +151,16 @@ pnpm install
 pnpm dev            # web app locally
 pnpm lint
 pnpm typecheck
-pnpm test           # Vitest unit tests
+pnpm test           # Vitest
+pnpm exec playwright install chromium
+pnpm test:e2e       # Playwright (starts the web app)
 pnpm --filter @phonebridge/web build
 pnpm evidence       # print Codex commit trailers
 ```
+
+## UI quality
+
+Users must see only a polished, consumer-grade website. Follow section 2.9 of `docs/ROADMAP.md` on every UI change: use only the design system in `apps/web/src/ui/`, hide technical details behind the status pill and Advanced drawer, write errors as one plain sentence with a next step, design every state, keep touch targets at least 44 px, support light and dark themes, pass axe checks, and look at laptop (1440 × 900) and phone (390 × 844) screenshots before opening a PR.
 
 ## Code style
 

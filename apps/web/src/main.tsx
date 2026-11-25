@@ -8,6 +8,6 @@ if (!root) throw new Error("Missing PhoneBridge root element");
 
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <App pathname={window.location.pathname} />
   </StrictMode>,
 );
