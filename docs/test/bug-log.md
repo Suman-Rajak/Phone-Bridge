@@ -23,3 +23,11 @@
 - Cause — Vite discovers the worker’s OpenCV dependency and reloads active development pages.
 - Fix — Disable Vite hot updates on the Playwright-owned server.
 - PR — [#5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5).
+
+## T06 · Lint includes Wrangler bundles
+
+- Symptom — `pnpm lint` reports unused variables and empty blocks in generated Worker code.
+- Reproduction — Run the pairing browser tests, then run `pnpm lint` with the generated Wrangler directory present.
+- Cause — ESLint and Prettier traversed Wrangler’s local build output.
+- Fix — Exclude Wrangler’s generated directories from source checks.
+- PR — [#8](https://github.com/Suman-Rajak/Phone-Bridge/pull/8).

@@ -239,7 +239,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test -- signal`
 
 #### T06 · Pairing, channels, clock sync, connection doctor
-- Stage: Build · Effort: xhigh · Depends: T05, T01D · Status: todo
+- Stage: Build · Effort: xhigh · Depends: T05, T01D · Status: done (PR #8)
 - Build:
   - Laptop `/`: create `RTCPeerConnection`, read its DTLS fingerprint from local SDP, get a room, show a QR for `https://<site>/p/<token>#fp=<fingerprint>` (fingerprint in the fragment so no server sees it), status line Waiting → Connecting → Connected.
   - Phone `/p/:token`: join, exchange SDP/ICE via the Worker. **Before accepting the laptop's description, compare its `a=fingerprint` with `fp` from the fragment; on mismatch abort with "Pairing not secure".**

@@ -27,6 +27,7 @@ export function App({ pathname = "/" }: { pathname?: string }) {
     );
   }
 
-  if (/^\/p\/[^/]+\/?$/.test(pathname)) return <PhoneShell />;
+  const room = /^\/p\/([^/]+)\/?$/.exec(pathname)?.[1];
+  if (room) return <PhoneShell room={room} />;
   return <LaptopShell />;
 }

@@ -279,6 +279,9 @@
 .intro {
   @apply grid content-end gap-4;
 }
+.laptop-main[data-connected="true"] .intro {
+  @apply content-center;
+}
 .intro h1 {
   @apply max-w-lg text-display font-semibold tracking-tighter;
 }
@@ -290,6 +293,36 @@
 }
 .pairing-card h2 {
   @apply text-xl font-semibold tracking-tight;
+}
+.pairing-link {
+  @apply grid justify-items-center gap-2 text-sm font-medium underline underline-offset-4;
+}
+.pairing-link img {
+  @apply rounded-panel border border-line;
+}
+.pairing-link > svg {
+  @apply size-16;
+}
+.verification-code {
+  @apply grid justify-items-center gap-4 text-center;
+}
+.verification-code output {
+  @apply block text-heading font-semibold tracking-widest tabular-nums;
+}
+.connection-button {
+  @apply min-h-touch cursor-pointer rounded-full;
+}
+.connection-button .status-dot {
+  @apply bg-accent;
+}
+.connection-readings {
+  @apply grid w-full gap-2 text-sm;
+}
+.connection-readings > div {
+  @apply flex justify-between gap-4 border-b border-line py-2;
+}
+.connection-readings dd {
+  @apply text-right text-muted;
 }
 .pairing-illustration {
   @apply mb-2 grid aspect-square w-32 place-items-center rounded-panel border border-line bg-accent-soft text-accent-ink sm:w-40;
