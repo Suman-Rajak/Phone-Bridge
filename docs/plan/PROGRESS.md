@@ -60,4 +60,8 @@ T12 is waiting on the SmartDoc archive and baseline in [H5](QUESTIONS.md#h5--sma
 
 Delivered file pickers, laptop drag and drop, confirmation, progress, verified saving, and cancellation in [PR #14](https://github.com/Suman-Rajak/Phone-Bridge/pull/14). Chromium transferred and downloaded 100 MB each way with matching SHA-256. The optimized focused loopback run measured 2.70 MB/s laptop to phone and 2.97 MB/s in reverse. The same-Wi-Fi goal still needs a physical-device run. See the [session evidence](../evidence/sessions/T13.md).
 
-Next is T14, text clipboard.
+## T14 · Text clipboard
+
+Delivered two-way text sharing in [PR #15](https://github.com/Suman-Rajak/Phone-Bridge/pull/15). The browser test round-tripped Hindi, emoji, and literal markup over WebRTC. It verified automatic copy when focused, an explicit Copy action when unfocused, and manual selection on permission denial. All 114 unit tests and sixteen browser tests passed locally. See the [session evidence](../evidence/sessions/T14.md).
+
+T15 is blocked on [H6](QUESTIONS.md#h6--codex-github-code-review-t15). T16, document camera and WebGL2 warp, is the next unblocked task and requires xhigh effort.
