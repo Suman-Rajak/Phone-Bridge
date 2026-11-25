@@ -9,7 +9,7 @@ import {
   ScanLine,
   Smartphone,
 } from "lucide-react";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import type { PairingSnapshot } from "@phonebridge/rtc";
 import {
   PairingCode,
@@ -18,7 +18,9 @@ import {
   usePairing,
   VerificationCode,
 } from "./pairing";
-import { Brand, Button, Card, EmptyState } from "./ui/primitives";
+import { Brand, Button, Card, EmptyState, Spinner } from "./ui/primitives";
+
+const ScanPreview = lazy(() => import("./scanner/scan-preview"));
 
 function AppHeader({ snapshot }: { snapshot: PairingSnapshot }) {
   return (
@@ -160,6 +162,7 @@ export function PhoneShell({ room }: { room: string }) {
   const [mode, setMode] = useState<(typeof modes)[number]>(modes[0]);
   const { snapshot } = usePairing("phone", room);
   const { failure, phase, sas } = snapshot;
+  const showScanner = phase === "connected" && mode.id === "scan";
   const Icon = mode.icon;
 
   return (
@@ -167,11 +170,18 @@ export function PhoneShell({ room }: { room: string }) {
       <AppHeader snapshot={snapshot} />
       <main className="phone-main">
         <h1>{mode.title}</h1>
-        <Card className="phone-workspace">
+        <Card className={showScanner ? "scan-workspace" : "phone-workspace"}>
           {failure ? (
             <PairingError failure={failure} />
           ) : phase === "connected" && sas ? (
-            <VerificationCode sas={sas} />
+            <>
+              {showScanner && (
+                <Suspense fallback={<Spinner label="Loading scanner" />}>
+                  <ScanPreview />
+                </Suspense>
+              )}
+              <VerificationCode sas={sas} />
+            </>
           ) : (
             <EmptyState
               icon={<Icon />}

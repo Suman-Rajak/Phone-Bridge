@@ -260,7 +260,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 ### Phase 2 — Scanner, PDF, files, clipboard (week 2)
 
 #### T08 · Phone preview detection
-- Stage: Build · Effort: high · Depends: T03, T06 · Status: todo
+- Stage: Build · Effort: high · Depends: T03, T06 · Status: done (PR #10)
 - Build: rear camera `getUserMedia({ video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } } })`; torch toggle when `track.getCapabilities().torch` exists; load OpenCV lazily in a worker when Scan mode opens (progress bar; HTTP caching); run T03 detection at ~15 fps on 320 px frames; smooth each corner with EMA α = 0.4 (*tune*); overlay green when locked, amber for fallback; fps counter with `?debug=1`. Create `e2e/fixtures/page.y4m` (short video of a document) and launch the phone context with `--use-fake-ui-for-media-stream --use-fake-device-for-media-stream --use-file-for-fake-video-capture=e2e/fixtures/page.y4m`.
 - Done when: E2E with the fake camera shows a detected quadrilateral; no main-thread task > 50 ms.
 - Verify: `pnpm test:e2e -- scan-detect`

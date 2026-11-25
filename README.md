@@ -17,6 +17,8 @@ Open the local URL printed by Vite, usually `http://localhost:5173`.
 
 For a local pairing check on one machine, open the pairing link in a second browser tab and compare the four digits shown on both pages. Select the Connected status to see the connection type and the three data channels.
 
+On a paired phone, choose **Scan** and **Start camera**. A green outline marks a detected page. An amber outline means the detector is estimating the boundary. Leave Scan or choose **Stop camera** to release the camera.
+
 Run the checks before opening a pull request.
 
 ```sh
