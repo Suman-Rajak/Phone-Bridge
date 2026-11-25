@@ -22,4 +22,8 @@ Delivered the OpenCV package, worker, detector, and SmartDoc benchmark runner in
 
 Delivered the product requirements, architecture, threat model, and versioned protocol package in [PR #5](https://github.com/Suman-Rajak/Phone-Bridge/pull/5). Local verification passed with 69 unit tests and seven Chromium tests. See the [session evidence](../evidence/sessions/T04.md).
 
-Next is T04S, Codex skills.
+## T04S · Repository skills
+
+Authored and discovered all three repository skills. The protocol and bug-fix workflows passed isolated exercises. The live vision benchmark exercise is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T04S.md).
+
+Next is T05, signaling Worker.
