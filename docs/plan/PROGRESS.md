@@ -14,4 +14,8 @@ Delivered in [PR #2](https://github.com/Suman-Rajak/Phone-Bridge/pull/2). Two Vi
 
 Delivered in [PR #3](https://github.com/Suman-Rajak/Phone-Bridge/pull/3). The diagnostics route checks ten capabilities. Twenty-six unit tests and six Chromium tests passed locally, with zero serious or critical axe findings. Local HTTPS and the tunnel hostname configuration passed server checks. See the [browser capability matrix](../understand/browser-capabilities.md), [HTTPS development guide](../ship/dev-https.md), and [session evidence](../evidence/sessions/T02.md).
 
-Next is T03, vision research, OpenCV packaging, detection, and baseline.
+## T03 · Vision research and document detection
+
+Delivered the OpenCV package, worker, detector, and SmartDoc benchmark runner in [PR #4](https://github.com/Suman-Rajak/Phone-Bridge/pull/4). Maximum refine corner error was 1.452 px across six synthetic pages. The SmartDoc baseline is blocked on [H5](QUESTIONS.md#h5--smartdoc-sample-access-t03-benchmark). See the [session evidence](../evidence/sessions/T03.md).
+
+Next is T04, plan, design docs, and protocol package.

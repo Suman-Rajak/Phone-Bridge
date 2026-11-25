@@ -27,6 +27,8 @@ In development, open `/ui` to preview the shared components in light and dark th
 
 Open `/diagnostics` to check browser features. To reach the dev server from a phone, use the [HTTPS development guide](docs/ship/dev-https.md).
 
+To benchmark document detection, install FFmpeg and tar, then run `pnpm bench:vision`. The [SmartDoc setup guide](docs/understand/datasets.md) includes a manual download option.
+
 Build the web app with `pnpm --filter @phonebridge/web build`. Run `pnpm evidence` to print Codex trailers from the local Git history.
 
 See the [roadmap](docs/ROADMAP.md) for feature milestones.

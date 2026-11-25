@@ -1,0 +1,12 @@
+{
+  "name": "@phonebridge/vision",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@techstark/opencv-js": "5.0.0-release.1"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./worker": "./src/worker-client.ts"
+  }
+}

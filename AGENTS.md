@@ -155,6 +155,8 @@ pnpm test           # Vitest
 pnpm exec playwright install chromium
 pnpm test:e2e       # Playwright (starts the web app)
 pnpm --filter @phonebridge/web build
+pnpm data:smartdoc  # download the official sample archive
+pnpm bench:vision   # score the SmartDoc sample and create the first baseline
 pnpm evidence       # print Codex commit trailers
 ```
 
