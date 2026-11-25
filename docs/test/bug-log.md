@@ -38,3 +38,4 @@
 - Reproduction — Run all Chromium tests with four Playwright workers while the source checks are also running. Inspect the retained tray trace.
 - Cause — The trace shows Straightening page after the drawer closed. The browser test exhausted its five-second assertion while the worker was processing the new image.
 - Fix — Give the corner-edit assertion the same 30-second window as the other worker-dependent steps and continue requiring a new image.
+- PR — [#13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13).
