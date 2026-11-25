@@ -272,7 +272,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test:e2e -- scan-capture`
 
 #### T10 · Rectify, enhance, page tray
-- Stage: Build · Effort: high · Depends: T09 · Status: in-progress
+- Stage: Build · Effort: high · Depends: T09 · Status: done (PR #12)
 - Build (laptop, Web Worker):
   1. Refine: rerun detection at 1000 px; use it if within 3% of the phone's corners, else keep the phone's.
   2. Rectify: width = max(|TR−TL|, |BR−BL|), height = max(|BL−TL|, |BR−TR|); if height ÷ width is within 5% of 1.414 snap to A4; cap 2480 × 3508; `getPerspectiveTransform` + `warpPerspective` (cubic).
