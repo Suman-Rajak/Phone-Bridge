@@ -59,3 +59,10 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Check sharpness with the grayscale Laplacian in the vision worker and compare unsmoothed corners against the start of the 500 ms hold. Rearm automatic capture when the page moves or leaves the view. Keep the manual shutter available whenever the camera has a frame and no capture is in progress.
 - Try native still capture first and fall back to a full-resolution video frame. Encode at JPEG quality 0.92. If the still camera uses a different aspect ratio, omit preview corners because the captured pixels may have a different crop. [Image Capture](https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture) · [Worker JPEG encoding](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob)
 - Use `scanId` for the existing transfer messages and bulk framing, cap the receiver at one scan, and show the scan only after validating its JPEG dimensions and digest in a worker. [Scan transfer contract](protocol.md#scan-transfer)
+
+## T10 · Page rectification and tray
+
+- Refine the corners at 1000 px in the laptop’s vision worker. When the phone reported a quadrilateral, apply refinement only if every corner stays within 3% of the image diagonal. Use the full frame when neither source provides a reliable quadrilateral. [OpenCV geometric transformations](https://docs.opencv.org/5.0/js_tutorials/js_imgproc/js_geometric_transformations/js_geometric_transformations.html)
+- Keep each original JPEG for corner edits. Process one page at a time in the worker and encode a separate thumbnail. Original preserves colour after straightening, and each of the other modes uses the corrected background.
+- Offer keyboard reordering alongside drag and drop. Retaking requests a replacement by page ID, and the old page stays available until the replacement passes verification. [Scan transfer contract](protocol.md#scan-transfer)
+- Keep verified pages and the editor in the laptop tab when the phone disconnects. End the pending transfer and release its buffers while allowing local edits to continue.

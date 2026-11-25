@@ -9,8 +9,9 @@ import {
   ScanLine,
   Smartphone,
 } from "lucide-react";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import type { PairingSnapshot } from "@phonebridge/rtc";
+import type { RetakeRequest } from "./scanner/scan-transfer";
 import {
   PairingCode,
   PairingError,
@@ -56,6 +57,10 @@ export function LaptopShell() {
   const { snapshot, session, reconnect } = usePairing("host");
   const { failure, phase, sas, url } = snapshot;
   const connected = phase === "connected";
+  const [hasTray, setHasTray] = useState(false);
+  useEffect(() => {
+    if (connected) setHasTray(true);
+  }, [connected]);
 
   return (
     <div className="app-shell">
@@ -95,12 +100,12 @@ export function LaptopShell() {
             </>
           )}
         </Card>
-        {connected && session && (
+        {(connected || hasTray) && (
           <Suspense fallback={<Spinner label="Loading scanner" />}>
-            <ScanInbox session={session} />
+            <ScanInbox session={connected ? session : null} />
           </Suspense>
         )}
-        {!connected && (
+        {!connected && !hasTray && (
           <section
             className="pairing-steps"
             aria-labelledby="pairing-steps-title"
@@ -169,6 +174,22 @@ export function PhoneShell({ room }: { room: string }) {
   const { snapshot, session } = usePairing("phone", room);
   const { failure, phase, sas } = snapshot;
   const showScanner = phase === "connected" && mode.id === "scan";
+  const [retake, setRetake] = useState<RetakeRequest | null>(null);
+  useEffect(
+    () =>
+      session?.observeTransfers({
+        control(message) {
+          if (message.type === "scan.retake") {
+            setRetake({ scanId: message.scanId, requestId: message.id });
+            setMode(modes[0]);
+          }
+        },
+      }),
+    [session],
+  );
+  const completeRetake = useCallback((requestId: string) => {
+    setRetake((request) => (request?.requestId === requestId ? null : request));
+  }, []);
   const Icon = mode.icon;
 
   return (
@@ -183,7 +204,11 @@ export function PhoneShell({ room }: { room: string }) {
             <>
               {showScanner && session && (
                 <Suspense fallback={<Spinner label="Loading scanner" />}>
-                  <ScanPreview session={session} />
+                  <ScanPreview
+                    session={session}
+                    retake={retake}
+                    completeRetake={completeRetake}
+                  />
                 </Suspense>
               )}
               <VerificationCode sas={sas} />

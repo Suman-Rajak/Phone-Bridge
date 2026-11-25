@@ -21,6 +21,8 @@ On a paired phone, choose **Scan** and **Start camera**. A green outline marks a
 
 Hold a sharp page steady to capture it automatically, or tap **Capture page**. The laptop shows the received scan after verifying it. Toggle **Auto capture** off to take scans only with the shutter.
 
+On the laptop, select a page to change its appearance, rotate it, or adjust its corners. Drag thumbnails to reorder pages or use the arrow buttons. Choose **Retake** to open Scan on the phone and capture a replacement.
+
 Run the checks before opening a pull request.
 
 ```sh

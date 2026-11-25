@@ -7,6 +7,7 @@ import type { VisionRequest, VisionResponse } from "@phonebridge/vision/worker";
 import { Button, EmptyState, ErrorState, ProgressBar } from "../ui/primitives";
 import { overlayDetection, previewSize } from "./preview-geometry";
 import { useScanCapture } from "./use-scan-capture";
+import type { RetakeRequest } from "./scan-transfer";
 
 type TorchCapabilities = MediaTrackCapabilities & {
   torch?: boolean | boolean[];
@@ -39,7 +40,15 @@ function cameraError(error: unknown): string {
   return "Close other apps using the camera and try again.";
 }
 
-export default function ScanPreview({ session }: { session: PairingSession }) {
+export default function ScanPreview({
+  session,
+  retake,
+  completeRetake,
+}: {
+  session: PairingSession;
+  retake: RetakeRequest | null;
+  completeRetake: (requestId: string) => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const trackRef = useRef<MediaStreamTrack>(null);
   const [running, setRunning] = useState(false);
@@ -52,7 +61,7 @@ export default function ScanPreview({ session }: { session: PairingSession }) {
   const [torchError, setTorchError] = useState("");
   const [fps, setFps] = useState(0);
   const { capture, observe, stopCapture, auto, toggleAuto, stage, resetStage } =
-    useScanCapture(session, videoRef, trackRef);
+    useScanCapture(session, videoRef, trackRef, retake, completeRetake);
   const debug =
     typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("debug") === "1";
@@ -251,7 +260,8 @@ export default function ScanPreview({ session }: { session: PairingSession }) {
           void sendFrame(player, detector);
           return;
         }
-        if (!request || request.id !== data.id) return;
+        if (!("detection" in data) || !request || request.id !== data.id)
+          return;
         const size = request;
         request = undefined;
         const next = data.detection;
@@ -317,8 +327,12 @@ export default function ScanPreview({ session }: { session: PairingSession }) {
     ) : (
       <EmptyState
         icon={<Camera />}
-        title="Scan a document"
-        description="Point your rear camera at a page on a flat surface."
+        title={retake ? "Retake the page" : "Scan a document"}
+        description={
+          retake
+            ? "Frame the page and capture a replacement."
+            : "Point your rear camera at a page on a flat surface."
+        }
         action={action}
       />
     );

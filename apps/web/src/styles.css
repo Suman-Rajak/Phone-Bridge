@@ -366,6 +366,10 @@
     @apply min-h-64 self-start;
     grid-row: 2;
   }
+  .laptop-main[data-connected="true"] .scan-inbox {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 .phone-shell {
@@ -421,7 +425,7 @@
   @apply flex flex-wrap justify-center gap-2;
 }
 .scan-inbox {
-  @apply grid min-w-0 gap-4 p-6 lg:col-start-1 lg:row-start-2;
+  @apply grid min-w-0 gap-4 p-6 lg:col-span-2;
 }
 .scan-inbox h2 {
   @apply text-xl font-semibold tracking-tight;
@@ -431,6 +435,42 @@
 }
 .scan-inbox img {
   @apply max-h-80 max-w-full rounded-control border border-line object-contain;
+}
+.scan-tray {
+  @apply flex gap-2 overflow-x-auto pb-2;
+}
+.scan-tray li {
+  @apply shrink-0;
+}
+.scan-tray li[draggable="true"] {
+  @apply cursor-grab;
+}
+.scan-tray .scan-thumbnail {
+  @apply grid min-w-24 justify-items-center gap-1 px-2 py-2 text-xs;
+}
+.scan-tray .scan-thumbnail[aria-pressed="true"] {
+  @apply border-accent bg-accent-soft text-accent-ink;
+}
+.scan-tray .scan-thumbnail img {
+  @apply size-14 object-contain;
+}
+.scan-page-actions {
+  @apply flex flex-wrap gap-2;
+}
+.corner-editor {
+  @apply px-5 py-5;
+}
+.corner-stage {
+  @apply relative mx-auto w-fit max-w-full;
+}
+.corner-stage img {
+  @apply block max-h-[50dvh] max-w-full;
+}
+.corner-stage .corner-handle {
+  @apply absolute grid size-touch touch-none -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full p-0;
+}
+.corner-stage .corner-handle span {
+  @apply size-4 rounded-full border-2 border-on-accent bg-accent shadow-panel;
 }
 .mode-bar {
   @apply sticky bottom-0 mx-auto grid w-full max-w-xl grid-cols-5 gap-1 border-t border-line bg-surface px-2 pt-2;

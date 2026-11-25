@@ -31,7 +31,12 @@ export type TransferMessage = Extract<
   Message,
   {
     type:
-      "scan.meta" | "file.accept" | "file.reject" | "file.done" | "file.cancel";
+      | "scan.meta"
+      | "scan.retake"
+      | "file.accept"
+      | "file.reject"
+      | "file.done"
+      | "file.cancel";
   }
 >;
 
@@ -537,6 +542,7 @@ export class PairingSession {
     const message = received.message;
     switch (message.type) {
       case "scan.meta":
+      case "scan.retake":
       case "file.accept":
       case "file.reject":
       case "file.done":

@@ -48,7 +48,12 @@ export const messageSchemas = {
     mime: z.literal("image/jpeg"),
     bytes: z.int().positive(),
     corners: z.tuple([point, point, point, point]).optional(),
+    replacesScanId: uuidSchema.optional(),
     capturedAt: milliseconds,
+  }),
+  "scan.retake": envelope.extend({
+    type: z.literal("scan.retake"),
+    scanId: uuidSchema,
   }),
   "file.offer": envelope.extend({
     type: z.literal("file.offer"),
@@ -202,6 +207,7 @@ export function validateMessage(
   if (
     (message.type === "hello" && message.device !== context.from) ||
     (message.type === "surface.info" && context.from !== "laptop") ||
+    (message.type === "scan.retake" && context.from !== "laptop") ||
     (phoneMessages.has(message.type) && context.from !== "phone")
   ) {
     return { ok: false, code: "wrong_sender" };

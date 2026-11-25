@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import type { PairingSession } from "@phonebridge/rtc";
 import type { Corners, Detection } from "@phonebridge/vision";
@@ -6,6 +6,7 @@ import { capturePhoto } from "./camera-photo";
 import { CaptureStability } from "./capture-stability";
 import { overlayDetection } from "./preview-geometry";
 import { sendScan } from "./scan-transfer";
+import type { RetakeRequest } from "./scan-transfer";
 
 type CaptureStage = "idle" | "taking" | "sending" | "sent" | "failed";
 type FrameSize = { width: number; height: number };
@@ -14,10 +15,13 @@ export function useScanCapture(
   session: PairingSession,
   video: RefObject<HTMLVideoElement | null>,
   track: RefObject<MediaStreamTrack | null>,
+  retake: RetakeRequest | null,
+  completeRetake: (requestId: string) => void,
 ) {
   const stability = useRef(new CaptureStability());
   const active = useRef<AbortController | null>(null);
   const corners = useRef<Corners | undefined>(undefined);
+  const retakeTarget = useRef<RetakeRequest | null>(null);
   const autoEnabled = useRef(true);
   const [auto, setAuto] = useState(true);
   const [stage, setStage] = useState<CaptureStage>("idle");
@@ -32,6 +36,7 @@ export function useScanCapture(
     const capturedAt = performance.now();
     const previewAspect = frame.videoWidth / frame.videoHeight;
     const detectedCorners = corners.current;
+    const replacement = retakeTarget.current;
     stability.current.markCaptured(detectedCorners);
     setStage("taking");
     const timeout = setTimeout(
@@ -56,17 +61,27 @@ export function useScanCapture(
       await sendScan(
         session,
         photo,
-        { capturedAt, corners: coordinates },
+        {
+          capturedAt,
+          corners: coordinates,
+          replacesScanId: replacement?.scanId,
+        },
         attempt.signal,
       );
-      if (active.current === attempt) setStage("sent");
+      if (active.current === attempt) {
+        setStage("sent");
+        if (replacement) {
+          retakeTarget.current = null;
+          completeRetake(replacement.requestId);
+        }
+      }
     } catch {
       if (active.current === attempt) setStage("failed");
     } finally {
       clearTimeout(timeout);
       if (active.current === attempt) active.current = null;
     }
-  }, [session, track, video]);
+  }, [completeRetake, session, track, video]);
 
   const observe = useCallback(
     (detection: Detection | null, sharpness: number, size: FrameSize) => {
@@ -89,6 +104,13 @@ export function useScanCapture(
     corners.current = undefined;
     stability.current.reset();
   }, []);
+
+  useEffect(() => {
+    if (!retake) return;
+    stopCapture();
+    retakeTarget.current = retake;
+    setStage("idle");
+  }, [retake, stopCapture]);
 
   function toggleAuto() {
     autoEnabled.current = !autoEnabled.current;

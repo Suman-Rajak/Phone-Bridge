@@ -78,24 +78,29 @@ test("scan-capture delivers automatic and manual scans and rejects a mismatched 
     await expect(received).not.toHaveAttribute("src", first ?? "");
     await expect(phone.getByText("Scan sent to laptop")).toBeVisible();
 
-    const actual = await received.evaluate(async (node) => {
-      const image = node as HTMLImageElement;
-      await image.decode();
-      const bytes = await (await fetch(image.src)).arrayBuffer();
-      const digest = new Uint8Array(
-        await crypto.subtle.digest("SHA-256", bytes),
-      );
-      return {
-        width: image.naturalWidth,
-        height: image.naturalHeight,
-        sha256: Array.from(digest, (value) =>
-          value.toString(16).padStart(2, "0"),
-        ).join(""),
-      };
-    });
+    await laptop.getByRole("button", { name: "Edit corners" }).click();
+    const editor = laptop.getByRole("dialog", { name: "Edit corners" });
+    const actual = await editor
+      .getByRole("img", { name: "Original scan" })
+      .evaluate(async (node) => {
+        const image = node as HTMLImageElement;
+        await image.decode();
+        const bytes = await (await fetch(image.src)).arrayBuffer();
+        const digest = new Uint8Array(
+          await crypto.subtle.digest("SHA-256", bytes),
+        );
+        return {
+          width: image.naturalWidth,
+          height: image.naturalHeight,
+          sha256: Array.from(digest, (value) =>
+            value.toString(16).padStart(2, "0"),
+          ).join(""),
+        };
+      });
     expect(actual).toEqual(
       await phone.evaluate(() => (window as CaptureTestWindow).declaredScan),
     );
+    await editor.getByRole("button", { name: "Close Edit corners" }).click();
 
     for (const device of [laptop, phone]) {
       const { violations } = await new AxeBuilder({ page: device }).analyze();
