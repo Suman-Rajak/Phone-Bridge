@@ -39,3 +39,11 @@
 - Cause — The trace shows Straightening page after the drawer closed. The browser test exhausted its five-second assertion while the worker was processing the new image.
 - Fix — Give the corner-edit assertion the same 30-second window as the other worker-dependent steps and continue requiring a new image.
 - PR — [#13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13).
+
+## T11 · Tray briefly showed the deleted page
+
+- Symptom — Hosted Chromium read the deleted page’s old preview before the remaining page became visible.
+- Reproduction — Delete the selected page in the two-page tray and inspect the preview immediately, as in the hosted disconnect-retention test.
+- Cause — The Blob URL hook returned its previous URL for one render after the selected Blob changed.
+- Fix — Associate each URL with its Blob and display it only for the current selection. Check that the remaining page’s preview is active before disconnecting.
+- PR — [#13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13).

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
 export function useBlobUrl(blob?: Blob): string {
-  const [url, setUrl] = useState("");
+  const [entry, setEntry] = useState<{ blob: Blob; url: string } | null>(null);
   useEffect(() => {
     if (!blob) {
-      setUrl("");
+      setEntry(null);
       return;
     }
     const next = URL.createObjectURL(blob);
-    setUrl(next);
+    setEntry({ blob, url: next });
     return () => URL.revokeObjectURL(next);
   }, [blob]);
-  return url;
+  return entry && entry.blob === blob ? entry.url : "";
 }

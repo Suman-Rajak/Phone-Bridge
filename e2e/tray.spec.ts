@@ -134,8 +134,11 @@ test("tray reorders, rotates, edits, retakes and deletes captured pages", async 
     });
     await expect(ready).toBeEnabled({ timeout: 30_000 });
     await expect(pages).toHaveCount(2);
+    const removed = await image.getAttribute("src");
     await laptop.getByRole("button", { name: "Delete" }).click();
     await expect(pages).toHaveCount(1);
+    await expect(image).not.toHaveAttribute("src", removed ?? "");
+    await expect(image).toHaveAttribute("src", /^blob:/);
     await expect(image).toBeVisible();
     const retained = await image.getAttribute("src");
     await phone.close();
