@@ -12,6 +12,8 @@ PhoneBridge turns any phone into a laptop's **scanner, live document camera, pre
 
 **Judge flow (must work in under 60 seconds):** open the live URL on a laptop → scan the QR with a phone → pages scanned on the phone appear flattened on the laptop → switch to Document Camera (live, flattened) → switch to Clicker (tilt for laser over sample slides).
 
+**Quality bar:** users see only a polished, consumer-grade website, never the plumbing. It should feel like a finished product (think a clean, modern app), with technical details (connection type, diagnostics, error codes) hidden behind small status indicators and an "Advanced" drawer. Rules are in 2.9; the design system is built in T01D.
+
 **Tiers (build in this order; never start a lower tier before the higher tier is done):**
 
 | Tier | Features |
@@ -59,6 +61,8 @@ PhoneBridge turns any phone into a laptop's **scanner, live document camera, pre
 10. If the Codex GitHub integration is enabled (H6), comment `@codex review` with `gh pr comment <n> --body "@codex review"`, wait up to 15 minutes (`gh pr view <n> --comments`), and fix valid findings in the same PR.
 11. If CI is green and the task is not a security review (T15, T28), merge with `gh pr merge --squash`, keeping the trailers in the squash message. If you cannot merge, leave it open, note it in `PROGRESS.md`, and continue on top of it.
 12. Set the task status to `done (PR #n)`, add a line to `docs/plan/PROGRESS.md` (task, PR, key metrics, decisions, next task), then go to step 1.
+
+**Manual push requests:** when the human simply asks you to push (outside the task loop), run `git push` for the current branch only. Do not create a pull request, branch or merge unless asked. Task work in the loop still uses a PR per task and merges it yourself.
 
 ### 2.3 Decide yourself (do not ask); log the choice in `docs/design/decisions.md`
 
@@ -128,7 +132,7 @@ Codex-Escalated-From: medium
 
 TypeScript strict · pnpm workspaces · Vite + React (no router library: `App.tsx` switches on `location.pathname`: `/` = laptop, `/p/:token` = phone, `/diagnostics`, `/built-with-codex`) · Tailwind CSS v4 via `@tailwindcss/vite` (no config file) · zod · Cloudflare Worker + Durable Object for signaling (Wrangler) · Cloudflare Pages hosting · native WebRTC (no wrapper) · OpenCV.js in a Web Worker · WebGL2 for live warp · `pdf-lib`, `pdfjs-dist` · `qrcode` · Vitest · Playwright.
 
-Allowed dependencies: `react`, `react-dom`, `vite`, `@vitejs/plugin-react`, `typescript`, `tailwindcss`, `@tailwindcss/vite`, `zod`, `qrcode`, `pdf-lib`, `pdfjs-dist`, OpenCV.js (per ADR-0002), `vitest`, `@playwright/test`, `wrangler`, `eslint`, `prettier`, official type packages. Stretch only, with an ADR: `tesseract.js`, `ml-levenberg-marquardt`. Anything else: ask.
+Allowed dependencies: `react`, `react-dom`, `vite`, `@vitejs/plugin-react`, `typescript`, `tailwindcss`, `@tailwindcss/vite`, `zod`, `qrcode`, `pdf-lib`, `pdfjs-dist`, OpenCV.js (per ADR-0002), `vitest`, `@playwright/test`, `wrangler`, `eslint`, `prettier`, `lucide-react` (icons), `@axe-core/playwright` (accessibility tests), official type packages. Stretch only, with an ADR: `tesseract.js`, `ml-levenberg-marquardt`. Anything else: ask.
 
 **Repo layout:**
 
@@ -147,6 +151,18 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 
 **Platform facts to rely on (verify anything else in official docs):** camera, motion sensors and the Clipboard API need HTTPS or localhost · iOS needs `DeviceOrientationEvent.requestPermission()` from a tap · Safari has no `ImageCapture` (draw the video frame instead) · `RelativeOrientationSensor` is Chromium-only (fall back to `deviceorientation`) · `showSaveFilePicker` is Chromium-only (fall back to Blob download) · keep heavy work in Web Workers (no main-thread task over 50 ms) · never render received text as HTML.
 
+### 2.9 UI and polish rules (every UI task)
+
+- **One design system.** Use only the tokens and components from T01D (`apps/web/src/ui/`). No one-off colours, fonts or spacing.
+- **Look:** clean and modern; generous whitespace; one accent colour; system font stack or one web font chosen in T01D; rounded cards; subtle shadows; light and dark themes following the OS setting.
+- **Phone first on the phone route:** full-screen camera views, a bottom mode bar, touch targets at least 44 × 44 px, controls reachable with one thumb, no horizontal scrolling at 360 px width.
+- **Laptop route:** a calm home screen with a large QR card and three-step "how it works"; after pairing, a clear workspace for the active mode.
+- **Hide the plumbing:** never show raw JSON, IDs, SDP, stack traces or error codes. Errors are one plain sentence plus what to do next ("Your phone lost connection. Keep this tab open and scan the new code."). The connection doctor lives behind a small status pill ("Connected · same Wi-Fi") that opens an Advanced drawer.
+- **Every state designed:** loading (skeletons or progress), empty, success, error and permission-denied states for each screen.
+- **Motion:** short CSS transitions (150–250 ms) for mode switches, captures and arrivals (e.g. a scanned page sliding into the tray); respect `prefers-reduced-motion`.
+- **Accessibility:** keyboard reachable, visible focus, labelled controls, WCAG AA contrast; `@axe-core/playwright` checks with zero serious or critical violations.
+- **Visual check before every UI PR:** capture Playwright screenshots at 1440 × 900 (laptop) and 390 × 844 (phone), look at them (image input), compare with `docs/design/ui.md`, and fix anything misaligned, cramped or inconsistent before opening the PR. Attach the screenshots to the PR.
+
 ---
 
 ## Part 3 — Tasks (do them in order)
@@ -154,10 +170,16 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 ### Phase 1 — Foundation (week 1)
 
 #### T01 · Repo foundation
-- Stage: Build · Effort: medium · Depends: — · Status: in-progress
+- Stage: Build · Effort: medium · Depends: — · Status: done (PR #1)
 - Build: pnpm monorepo with the layout in 2.8; TypeScript strict; ESLint + Prettier; Vitest with one sample test; minimal Vite + React app in `apps/web` showing "PhoneBridge"; Tailwind v4; GitHub Actions running lint, typecheck, unit tests on every PR; `scripts/evidence.ts` stub that prints commit trailers; create `docs/plan/PROGRESS.md`, `docs/plan/QUESTIONS.md`, `docs/design/decisions.md`, `docs/test/bug-log.md`, and `README.md` with a Setup section that every later task keeps accurate.
 - Done when: `pnpm install`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm dev` all work; CI passes on the PR.
 - Verify: `pnpm install && pnpm lint && pnpm typecheck && pnpm test`
+
+#### T01D · Design system and app shell
+- Stage: Build · Effort: medium · Depends: T01 · Status: in-progress
+- Build: `docs/design/ui.md` defining the visual language (colour tokens for light and dark, type scale, spacing scale, radii, shadows, motion durations, icon style with `lucide-react`) and a short description of each main screen; implement tokens as Tailwind v4 theme variables; components in `apps/web/src/ui/`: Button (primary, secondary, ghost, sizes), Card, Sheet/Drawer, Modal, Toast, Progress bar, Spinner/Skeleton, Tabs, Segmented control, Status pill, Empty state, Error state; app shells for laptop (`/`) and phone (`/p/:token`, with bottom mode bar); a dev-only `/ui` gallery route showing every component in light and dark (excluded from production builds).
+- Done when: the gallery renders every component in both themes; axe checks pass on the gallery; screenshots at both viewports are attached to the PR and look consistent.
+- Verify: `pnpm test && pnpm test:e2e -- ui-gallery`
 
 #### T02 · Capability diagnostics + HTTPS dev guide
 - Stage: Understand · Effort: medium · Depends: T01 · Status: todo
@@ -216,14 +238,14 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 - Verify: `pnpm test -- signal`
 
 #### T06 · Pairing, channels, clock sync, connection doctor
-- Stage: Build · Effort: xhigh · Depends: T05 · Status: todo
+- Stage: Build · Effort: xhigh · Depends: T05, T01D · Status: todo
 - Build:
   - Laptop `/`: create `RTCPeerConnection`, read its DTLS fingerprint from local SDP, get a room, show a QR for `https://<site>/p/<token>#fp=<fingerprint>` (fingerprint in the fragment so no server sees it), status line Waiting → Connecting → Connected.
   - Phone `/p/:token`: join, exchange SDP/ICE via the Worker. **Before accepting the laptop's description, compare its `a=fingerprint` with `fp` from the fragment; on mismatch abort with "Pairing not secure".**
   - Both show the SAS digits.
   - Channels: `control` (reliable, ordered, JSON), `bulk` (reliable, ordered, binary), `rt` (unordered, `maxRetransmits: 0`, pointer samples only).
   - Clock sync: 8 pings at start and every 30 s; offset = ((t2−t1)+(t3−t4))/2, RTT = (t4−t1)−(t3−t2); use the lowest-RTT sample.
-  - Connection doctor (both sides): connection type from `getStats()` succeeded candidate pair (host = same network, srflx = through NAT, relay = TURN), RTT, outgoing bitrate, channel states, "Copy diagnostics".
+  - Connection doctor (both sides), hidden behind a status pill ("Connected · same Wi-Fi") that opens an Advanced drawer: connection type from `getStats()` succeeded candidate pair (host = same network, srflx = through NAT, relay = TURN), RTT, outgoing bitrate, channel states, "Copy diagnostics".
   - Reconnect: ICE `disconnected` > 5 s → `restartIce()`; after 3 failures show "Reconnect" with a fresh QR.
   - STUN: a public STUN server (e.g. `stun:stun.l.google.com:19302`).
 - Done when: Playwright with two contexts against `wrangler dev` reaches Connected with all three channels in < 5 s; tampered fingerprint aborts; second phone gets `room_full`.
@@ -342,7 +364,8 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 
 #### T26 · Judge flow and landing page (feature freeze after this task)
 - Stage: Build · Effort: medium · Depends: T11, T14, T17 · Status: todo
-- Build: landing page with a 60-second guided demo, sample slide PDF, printable sample page, clear empty states and error messages.
+- Build: landing page with a 60-second guided demo, sample slide PDF, printable sample page; a full polish pass over every screen against 2.9 and `docs/design/ui.md` (consistent spacing, every state designed, plain-language errors, smooth transitions, dark mode); favicon, app icon and social preview image.
+- Done when: Lighthouse scores ≥ 90 for Performance, Accessibility and Best Practices on the landing page (record them in `docs/test/results/`); axe checks show zero serious or critical violations on every route; a person who has never seen the app completes the judge flow without help.
 
 #### T27 · Automation and Evidence Pack generator
 - Stage: Automate · Effort: medium · Depends: T12 · Status: todo
@@ -367,7 +390,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 
 #### T30 · Documentation set
 - Stage: Document · Effort: low · Depends: T29 · Status: todo
-- Build: README (problem, live URL, 60-second judge flow, demo GIF, architecture diagram, benchmark table, browser support, limitations, licence) with **clear setup instructions** from a fresh clone (prerequisites, install, run locally, HTTPS on phone, tests, deploy); `docs/user-guide.md` per mode; `docs/troubleshooting.md`; `CONTRIBUTING.md`; JSDoc on every exported function in `packages/*`; `docs/design/*` matching the final code.
+- Build: README written like a product page first and a developer guide second, in this order: (1) name, one-line pitch, prominent **Try it live** link, demo GIF; (2) "Use it in 30 seconds": three plain steps for normal users; (3) Features: each mode with a screenshot; (4) How it works: architecture diagram and a privacy line (nothing uploaded or stored); (5) Results: benchmark table; (6) Browser support and limitations; (7) Built with Codex: link to the Evidence Pack; (8) "Run it yourself": **clear setup instructions** from a fresh clone (prerequisites, install, run locally, HTTPS on phone, tests, deploy); (9) Contributing and licence. Keep developer detail out of sections 1–7; `docs/user-guide.md` per mode; `docs/troubleshooting.md`; `CONTRIBUTING.md`; JSDoc on every exported function in `packages/*`; `docs/design/*` matching the final code.
 - Done when: following the README in a fresh directory works exactly as written; every doc link resolves.
 
 #### T31 · Evidence Pack and submission check

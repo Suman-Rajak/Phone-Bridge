@@ -11,9 +11,11 @@
     "lint": "eslint . && prettier --check .",
     "typecheck": "tsc --project tsconfig.json",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "evidence": "node scripts/evidence.ts"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
     "@playwright/test": "1.65.1",
     "@types/node": "24.19.3",
     "eslint": "10.15.0",

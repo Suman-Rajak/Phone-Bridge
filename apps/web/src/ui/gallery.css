@@ -1,0 +1,26 @@
+@reference "../styles.css";
+
+.gallery-page {
+  @apply min-h-dvh bg-canvas text-ink;
+}
+.gallery-main {
+  @apply mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:px-8 sm:py-12;
+}
+.gallery-header {
+  @apply flex flex-wrap items-end justify-between gap-4;
+}
+.gallery-header h1 {
+  @apply mt-4 text-heading font-semibold tracking-tight;
+}
+.gallery-grid {
+  @apply grid items-start gap-4 md:grid-cols-2;
+}
+.gallery-card {
+  @apply grid gap-4 p-4 sm:p-5;
+}
+.gallery-card h2 {
+  @apply text-lg font-semibold tracking-tight;
+}
+.button-row {
+  @apply flex flex-wrap gap-2;
+}

@@ -14,5 +14,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["apps", "packages", "bench", "e2e", "scripts"]
+  "include": ["apps", "packages", "bench", "e2e", "scripts", "*.config.ts"]
 }
