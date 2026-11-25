@@ -5,9 +5,9 @@ import { join } from "node:path";
 async function pairingUrl(laptop: Page): Promise<URL> {
   await laptop.goto("/");
   const link = laptop.getByRole("link", { name: "Open pairing link" });
-  await expect(
-    link.getByRole("img", { name: "Pairing QR code" }),
-  ).toBeVisible({ timeout: 15_000 });
+  await expect(link.getByRole("img", { name: "Pairing QR code" })).toBeVisible({
+    timeout: 15_000,
+  });
   const href = await link.getAttribute("href");
   expect(href).toMatch(/\/p\/[A-Za-z0-9_-]{22}#fp=[a-f0-9]{64}$/);
   return new URL(href ?? "");
