@@ -312,7 +312,7 @@ docs/   understand/ plan/ design/(adr/) test/(results/) review/ ship/ automate/ 
 ### Phase 3 — Document camera, presenter, TURN (week 3)
 
 #### T16 · Doc-cam stream and WebGL2 warp
-- Stage: Build · Effort: xhigh · Depends: T06, T03 · Status: todo
+- Stage: Build · Effort: xhigh · Depends: T06, T03 · Status: done (PR #16)
 - Build: phone sends the rear camera as a video track (ideal 1920×1080, 30 fps) with torch toggle; laptop uploads each frame to a WebGL2 texture; fragment shader maps each output pixel through the inverse homography to the source (bilinear) with optional contrast/brightness; homography maths in TypeScript, unit-tested against OpenCV.
 - Done when: fake-camera E2E renders a rectified output; homography tests pass.
 - Verify: `pnpm test && pnpm test:e2e -- doccam`

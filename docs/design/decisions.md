@@ -85,3 +85,8 @@ See the [UI specification](ui.md), [Tailwind theme variables](https://tailwindcs
 - Read the device clipboard on the Paste button’s user gesture. Keep the text box available when the browser declines clipboard access. [Clipboard permissions and activation](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
 - Write validated incoming text automatically on a focused laptop when the browser permits it. Otherwise show a Copy action. On the phone, show the received text and let the user choose Copy. Select the read-only text when the browser declines the write. [Document focus](https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus)
 - Keep the current received text in the tab and render it through a read-only text field. Use the protocol’s existing 1 MB UTF-8 limit in both directions.
+
+## T16 · Live document camera
+
+- Add the video track on the existing pinned connection when the user starts sharing. Leaving Live releases the hardware and removes the sender. [WebRTC track negotiation](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addTrack)
+- Acquire page corners from a downscaled received frame in the existing vision worker. The GPU samples the original video with a bilinear texture and a column-major inverse homography. Keep the video playing for the unflattened fallback during graphics context loss. [Video textures](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL)

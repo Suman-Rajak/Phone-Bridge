@@ -124,6 +124,19 @@ export class PairingSession {
           this.flushLocalIce();
         }
       };
+      peer.ontrack = ({ track, streams }) => {
+        const [stream] = streams;
+        if (this.options.role !== "host" || track.kind !== "video" || !stream)
+          return;
+        this.publish({ cameraStream: stream });
+        stream.onremovetrack = () => {
+          if (
+            !stream.getVideoTracks().length &&
+            this.state.cameraStream === stream
+          )
+            this.publish({ cameraStream: undefined });
+        };
+      };
       peer.ondatachannel = ({ channel }) => this.registerChannel(channel);
       peer.onconnectionstatechange = () => this.updateConnection();
       peer.oniceconnectionstatechange = () => this.updateIce();
@@ -182,6 +195,25 @@ export class PairingSession {
     this.peer?.close();
     this.pendingPings.clear();
     this.transferObservers.clear();
+  }
+
+  /** Share video on the pinned phone connection until the caller releases it. */
+  shareCamera(stream: MediaStream): () => void {
+    const peer = this.peer;
+    const [track] = stream.getVideoTracks();
+    if (
+      !peer ||
+      this.options.role !== "phone" ||
+      this.state.phase !== "connected" ||
+      !track ||
+      typeof peer.addTrack !== "function" ||
+      typeof peer.removeTrack !== "function"
+    )
+      throw new Error("Reconnect in a browser with video sharing support.");
+    const sender = peer.addTrack(track, stream);
+    return () => {
+      if (!this.closed) peer.removeTrack(sender);
+    };
   }
 
   /** Observe transfer messages after wire validation. */

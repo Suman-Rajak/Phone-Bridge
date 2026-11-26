@@ -581,3 +581,33 @@
     animation: none;
   }
 }
+
+.laptop-main[data-live="true"] .scan-inbox:not(.live-page) {
+  display: none;
+}
+.live-page canvas,
+.live-page video {
+  @apply w-full rounded-control;
+}
+.live-controls {
+  @apply flex flex-wrap items-end gap-4;
+}
+.live-controls label {
+  @apply grid gap-1 text-sm font-medium;
+}
+.live-controls input {
+  @apply min-h-touch accent-accent;
+}
+
+.live-feed {
+  @apply grid overflow-hidden rounded-control bg-black;
+}
+.live-feed > * {
+  grid-area: 1 / 1;
+}
+.live-feed video[aria-hidden="true"] {
+  @apply absolute size-px;
+}
+.live-feed {
+  position: relative;
+}

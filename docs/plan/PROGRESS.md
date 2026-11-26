@@ -64,4 +64,8 @@ Delivered file pickers, laptop drag and drop, confirmation, progress, verified s
 
 Delivered two-way text sharing in [PR #15](https://github.com/Suman-Rajak/Phone-Bridge/pull/15). The browser test round-tripped Hindi, emoji, and literal markup over WebRTC. It verified automatic copy when focused, an explicit Copy action when unfocused, and manual selection on permission denial. All 114 unit tests and sixteen browser tests passed locally. See the [session evidence](../evidence/sessions/T14.md).
 
-T15 is blocked on [H6](QUESTIONS.md#h6--codex-github-code-review-t15). T16, document camera and WebGL2 warp, is the next unblocked task and requires xhigh effort.
+T15 is blocked on [H6](QUESTIONS.md#h6--codex-github-code-review-t15).
+
+## T16 · Live document camera
+
+The phone streams its camera to the laptop, which flattens the page and offers contrast and brightness controls. The pixel check, OpenCV matrix comparison and graphics-loss fallback passed. Next is T17, live page tracking, lock and pop-out. [PR #16](https://github.com/Suman-Rajak/Phone-Bridge/pull/16) · [Session evidence](../evidence/sessions/T16.md)

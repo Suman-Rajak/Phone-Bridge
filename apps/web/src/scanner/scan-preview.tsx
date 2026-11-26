@@ -9,36 +9,8 @@ import { overlayDetection, previewSize } from "./preview-geometry";
 import { useScanCapture } from "./use-scan-capture";
 import type { RetakeRequest } from "./scan-transfer";
 
-type TorchCapabilities = MediaTrackCapabilities & {
-  torch?: boolean | boolean[];
-};
-type TorchConstraints = MediaTrackConstraints & { torch: ConstrainBoolean };
-type TorchSettings = MediaTrackSettings & { torch?: boolean };
-
+import { applyTorch, canToggleTorch, cameraError } from "./camera-controls";
 const scanIntervalMs = 1000 / 15;
-
-function canToggleTorch(track: MediaStreamTrack): boolean {
-  if (
-    typeof track.getCapabilities !== "function" ||
-    typeof track.applyConstraints !== "function"
-  )
-    return false;
-  const { torch } = track.getCapabilities() as TorchCapabilities;
-  return (
-    torch === true ||
-    (Array.isArray(torch) && torch.includes(true) && torch.includes(false))
-  );
-}
-
-function cameraError(error: unknown): string {
-  if (error instanceof DOMException && error.name === "NotAllowedError") {
-    return "Allow camera access in your browser and try again.";
-  }
-  if (error instanceof DOMException && error.name === "NotFoundError") {
-    return "No camera was found. Connect a camera and try again.";
-  }
-  return "Close other apps using the camera and try again.";
-}
 
 export default function ScanPreview({
   session,
@@ -297,14 +269,7 @@ export default function ScanPreview({
     setTorchError("");
     const next = !torchActive;
     try {
-      const constraints: TorchConstraints = {
-        ...track.getConstraints(),
-        torch: { exact: next },
-      };
-      await track.applyConstraints(constraints);
-      const { torch } = track.getSettings() as TorchSettings;
-      if (typeof torch === "boolean" && torch !== next)
-        throw new Error("Torch did not change");
+      await applyTorch(track, next);
       if (trackRef.current === track) setTorchActive(next);
     } catch {
       if (trackRef.current === track)
