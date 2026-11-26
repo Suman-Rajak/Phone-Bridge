@@ -33,7 +33,7 @@ async function downloadAndCheck(
   const list = receiver.getByRole("list", { name: "Received files" });
   const row = list.getByRole("listitem").filter({ hasText: fixtureName });
   const link = row.getByRole("link", { name: "Download file" });
-  await expect(link).toBeVisible({ timeout: 60_000 });
+  await expect(link).toBeVisible({ timeout: 90_000 });
   const [download] = await Promise.all([
     receiver.waitForEvent("download"),
     link.click(),
@@ -51,7 +51,7 @@ test("files transfer 100 MB both ways, confirm large files, and cancel on both d
   page: laptop,
   browser,
 }, info) => {
-  test.setTimeout(180_000);
+  test.setTimeout(240_000);
   const path = info.outputPath(fixtureName);
   const digest = await createFixture(path);
   await laptop.setViewportSize({ width: 1440, height: 900 });

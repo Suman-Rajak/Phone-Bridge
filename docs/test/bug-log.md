@@ -55,3 +55,9 @@
 - Cause — The Blob URL hook returned its previous URL for one render after the selected Blob changed.
 - Fix — Associate each URL with its Blob and display it only for the current selection. Check that the remaining page’s preview is active before disconnecting.
 - PR — [#13](https://github.com/Suman-Rajak/Phone-Bridge/pull/13).
+
+## T16 · File test timed out while a large transfer was progressing
+
+- Reproduction — Run the complete Edge browser suite with four workers and again with two. One receiver reached 96.4 MB at 1.62 MB/s. The other reached 100 MB at 1.67 MB/s while verification was still pending.
+- Cause — The download assertion allowed only 60 seconds for both transport and final verification. At those rates transfer alone takes about 60 seconds.
+- Fix — Allow 90 seconds per direction and four minutes for the two-way flow. Continue verifying both downloaded hashes, file sizes, cancellation, and the measured throughput. [PR #16](https://github.com/Suman-Rajak/Phone-Bridge/pull/16)

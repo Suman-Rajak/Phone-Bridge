@@ -66,6 +66,6 @@ Delivered two-way text sharing in [PR #15](https://github.com/Suman-Rajak/Phone-
 
 T15 is blocked on [H6](QUESTIONS.md#h6--codex-github-code-review-t15).
 
-## T16 � Live document camera
+## T16 · Live document camera
 
-The phone streams its camera to the laptop, which flattens the page and offers contrast and brightness controls. The pixel check, OpenCV matrix comparison and graphics-loss fallback passed. Next is T17, live page tracking, lock and pop-out. [PR #16](https://github.com/Suman-Rajak/Phone-Bridge/pull/16) � [Session evidence](../evidence/sessions/T16.md)
+The phone streams its camera to the laptop, which flattens the page and offers contrast and brightness controls. The pixel check, OpenCV matrix comparison and graphics-loss fallback passed. Next is T17, live page tracking, lock and pop-out. [PR #16](https://github.com/Suman-Rajak/Phone-Bridge/pull/16) · [Session evidence](../evidence/sessions/T16.md)
