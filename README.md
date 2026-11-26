@@ -25,6 +25,8 @@ On the laptop, select a page to change its appearance, rotate it, or adjust its 
 
 Choose **Export PDF** on the laptop and enter a target size in KB. Select **Create PDF** and check the final size before downloading. The PDF follows the tray’s page order.
 
+Choose **Live** on the paired phone, frame the page, and tap **Share live camera**. The laptop straightens the page and lets you adjust brightness and contrast. Select **Find page again** after moving the camera. Choose **Stop sharing** on the phone to release the camera.
+
 Use **Files** on the laptop or open **Clipboard** on the phone to send documents in either direction. The receiving device confirms files larger than 50 MB. Once a file passes verification, select **Save file** or **Download file**.
 
 Use **Text clipboard** to paste or type a message and select **Send**. When the browser allows it, a focused laptop copies received text automatically. Use **Copy** on the phone or when the laptop shows the received-text notification.

@@ -21,6 +21,8 @@ import {
 } from "./pairing";
 import { Brand, Button, Card, EmptyState, Spinner } from "./ui/primitives";
 
+const LiveCamera = lazy(() => import("./live/live-camera"));
+const LivePage = lazy(() => import("./live/live-page"));
 const ScanPreview = lazy(() => import("./scanner/scan-preview"));
 const ScanInbox = lazy(() => import("./scanner/scan-inbox"));
 const FilePanel = lazy(() => import("./files/file-panel"));
@@ -59,6 +61,7 @@ export function LaptopShell() {
   const { snapshot, session, reconnect } = usePairing("host");
   const { failure, phase, sas, url } = snapshot;
   const connected = phase === "connected";
+  const cameraStream = connected ? snapshot.cameraStream : undefined;
   const [hasTray, setHasTray] = useState(false);
   useEffect(() => {
     if (connected) setHasTray(true);
@@ -67,9 +70,19 @@ export function LaptopShell() {
   return (
     <div className="app-shell">
       <AppHeader snapshot={snapshot} />
-      <main className="laptop-main" data-connected={connected}>
+      <main
+        className="laptop-main"
+        data-connected={connected}
+        data-live={Boolean(cameraStream)}
+      >
         <div className="intro">
-          <h1>{connected ? "Scanner" : "Connect your phone"}</h1>
+          <h1>
+            {cameraStream
+              ? "Document camera"
+              : connected
+                ? "Scanner"
+                : "Connect your phone"}
+          </h1>
           {!connected && (
             <p>
               Use your phone as a scanner, document camera, clicker, or
@@ -120,6 +133,11 @@ export function LaptopShell() {
         {(connected || hasTray) && (
           <Suspense fallback={<Spinner label="Loading scanner" />}>
             <ScanInbox session={connected ? session : null} />
+          </Suspense>
+        )}
+        {cameraStream && (
+          <Suspense fallback={<Spinner label="Loading live page" />}>
+            <LivePage stream={cameraStream} />
           </Suspense>
         )}
         {!connected && !hasTray && (
@@ -243,11 +261,22 @@ export function PhoneShell({ room }: { room: string }) {
             />
           </Suspense>
         )}
-        <Card className={showScanner ? "scan-workspace" : "phone-workspace"}>
+        <Card
+          className={
+            showScanner || mode.id === "live"
+              ? "scan-workspace"
+              : "phone-workspace"
+          }
+        >
           {failure ? (
             <PairingError failure={failure} />
           ) : phase === "connected" && sas ? (
             <>
+              {mode.id === "live" && session && (
+                <Suspense fallback={<Spinner label="Loading camera" />}>
+                  <LiveCamera session={session} />
+                </Suspense>
+              )}
               {showScanner && session && (
                 <Suspense fallback={<Spinner label="Loading scanner" />}>
                   <ScanPreview

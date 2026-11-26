@@ -15,6 +15,7 @@ export type PairingSnapshot = {
   url: string | null;
   sas: string | null;
   failure: PairingFailure | null;
+  cameraStream?: MediaStream;
   diagnostics: Diagnostics;
 };
 
